@@ -1,5 +1,14 @@
-import mongoose from "mongoose";
-const { Schema } = mongoose;
+import mongoose, { Types, Schema } from "mongoose";
+
+export interface IUserProfile {
+    _id: Types.ObjectId
+    email: string,
+    username: string,
+    password: string,
+    profile_url?: string,
+    lastLogin: Date,
+    createdAt: Date,
+}
 
 const userSchema = new Schema({
     email: {
@@ -25,4 +34,4 @@ const userSchema = new Schema({
     },
 });
 
-export default mongoose.model('user', userSchema);
+export default mongoose.model<IUserProfile>('user', userSchema);

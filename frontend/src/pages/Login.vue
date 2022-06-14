@@ -11,11 +11,14 @@
 
 <script lang="ts" setup>
 import { useSecurityStore } from "../stores/security";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const securityStore = useSecurityStore();
 
 const onSubmit = async ({ username, password }: any) => {
-  await securityStore.login(username, password);
+  await securityStore.login(username, password)
+      .then(() => router.push({ path: '/dashboard', replace: true }));
 };
 
 import LoginForm from '../components/Form/LoginForm.vue';

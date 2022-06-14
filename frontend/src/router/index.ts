@@ -1,12 +1,22 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
+import Dashboard from '../pages/Dashboard.vue';
+import app from '../main';
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/login',
         name: 'Login',
         component: Login,
+        meta: {
+            secure: true,
+        }
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard,
         meta: {
             secure: true,
         }
@@ -22,6 +32,14 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
     history: createWebHistory('/'),
     routes,
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.secure && to.path !== '/login') {
+        // TODO: handle login
+        return next('/login');
+    }
+    return next();
 });
 
 export default router;

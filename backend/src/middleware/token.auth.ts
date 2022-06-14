@@ -9,8 +9,11 @@ declare module 'express-serve-static-core' {
 }
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-    const { authorization } = req.headers;
-    const token = authorization && authorization.split(' ')[1];
+    if (req.userId)
+        return next();
+    // const { authorization } = req.headers;
+    // const token = authorization && authorization.split(' ')[1];
+    const token = req.cookies.token;
     if (token == null)
         return res.sendStatus(401);
     jwt.verify(token, process.env.SECRET as string, (error: any, userId: any) => {

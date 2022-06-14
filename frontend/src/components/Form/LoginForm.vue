@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { RouterLink } from "vue-router";
-import { object, string } from "yup";
+import { mixed, object, string } from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 
 interface LoginFormProps {
   onSubmit: (values: any) => void
 }
-defineProps<LoginFormProps>()
-
 const loginSchema = object({
   username: string()
       .required("You must specify a username.")
@@ -17,6 +14,8 @@ const loginSchema = object({
       .required("You must enter a password.")
       .min(8, "Your password must be at least 8 characters.")
 });
+
+defineProps<LoginFormProps>()
 
 </script>
 

@@ -2,32 +2,24 @@ import { defineStore } from 'pinia';
 import { UserProfile } from '../models/user/user.profile';
 import { AxiosRequestHeaders, AxiosResponse } from 'axios';
 import http from '../../http-common';
+import app from '../main';
 
 export type SecurityState = {
     user: UserProfile | null,
-    token: string | null,
 }
 
 export const useSecurityStore = defineStore('security', {
     state: (): SecurityState => ({
         user: null,
-        token: ""
     }),
-    persist: true,
     getters: {
         isLoggedIn: (state: any) => {
-            return state.user != null && !!state.token
-        },
-        getAuthorizationHeader(state: SecurityState): AxiosRequestHeaders {
-            if (state.token !== null)
-                return { 'Authorization': `Bearer ${state.token}` }
-            return  {}
+            return state.user != null
         }
     },
     actions: {
         logout() {
             this.user = null;
-            this.token = null;
         },
         async login(user: string, password: string) {
             this.logout();
@@ -36,10 +28,7 @@ export const useSecurityStore = defineStore('security', {
                     user,
                     password
                 }).then(async response => {
-                    this.token = this.handleResponse(response).token;
-                    await http.get('/user', {
-                        headers: this.getAuthorizationHeader,
-                    }).then(response => {
+                    await http.get('/user').then(response => {
                         this.user = this.handleResponse(response);
                     });
                 });

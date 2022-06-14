@@ -1,11 +1,11 @@
 import express from "express";
-import UserProfile from "../models/user/UserProfile";
+import UserProfile from "../models/user/user.profile";
 import { sendData, sendError } from "../utils/request-util";
 import { authenticateToken } from "../middleware/token.auth";
 const router = express.Router();
 
 router.get('/user', authenticateToken, async (req, res) => {
-    UserProfile.findOne({ _id: req.userId }, '', (error, result) => {
+    UserProfile.findOne({ _id: req.userId }, '-password', (error, result) => {
         if (error || result === null)
             sendError(res, { error: 'This user does not exist!', code: 404 });
         else sendData(res, result);

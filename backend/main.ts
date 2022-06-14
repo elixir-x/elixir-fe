@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRouter from "./src/routers/user";
 import securityRouter from './src/routers/security';
@@ -22,8 +23,9 @@ mongoose
         app.use(express.urlencoded({extended: true}));
         app.use(cors({
             credentials: true,
-            origin: 'http://localhost:3000'
+            origin: process.env.ORIGIN_URL
         }));
+        app.use(cookieParser());
         app.use('/api/v1/', userRouter, securityRouter);
 
         app.listen(process.env.PORT, () => {

@@ -13,6 +13,7 @@
     "pinia-plugin-persistedstate": "^1.6.1",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.25",
+    "vue-cookies": "^1.8.1",
     "vue-router": "^4.0.16",
     "yup": "^0.32.11"
   },
