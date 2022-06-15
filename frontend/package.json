@@ -8,12 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/express-session": "^1.17.4",
     "axios": "^0.27.2",
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.6.1",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.25",
-    "vue-cookies": "^1.8.1",
     "vue-router": "^4.0.16",
     "yup": "^0.32.11"
   },

@@ -6,20 +6,28 @@ import app from '../main';
 
 export type SecurityState = {
     user: UserProfile | null,
+    token: string | null,
 }
 
 export const useSecurityStore = defineStore('security', {
     state: (): SecurityState => ({
         user: null,
+        token: ""
     }),
     getters: {
         isLoggedIn: (state: any) => {
-            return state.user != null
+            return state.user != null && !!state.token
+        },
+        getAuthorizationHeader(state: SecurityState): AxiosRequestHeaders {
+            if (state.token !== null)
+                return { 'Authorization': `Bearer ${state.token}` }
+            return  {}
         }
     },
     actions: {
         logout() {
             this.user = null;
+            this.token = null;
         },
         async login(user: string, password: string) {
             this.logout();
@@ -28,7 +36,10 @@ export const useSecurityStore = defineStore('security', {
                     user,
                     password
                 }).then(async response => {
-                    await http.get('/user').then(response => {
+                    this.token = this.handleResponse(response).token;
+                    await http.get('/user', {
+                        headers: this.getAuthorizationHeader,
+                    }).then(response => {
                         this.user = this.handleResponse(response);
                     });
                 });

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 export interface RequestError {
-    error: string,
+    message: string,
     code?: number
 }
 
@@ -18,7 +18,7 @@ export const constructSuccess = (success: boolean) => {
 export const constructError = (error: RequestError) => {
     return {
         success: false,
-        error: error.error
+        message: error.message
     };
 };
 

@@ -1,6 +1,7 @@
-import mongoose, { Types, Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+import argon2 from "argon2";
 
-export interface IUserProfile {
+export interface UserDocument {
     _id: Types.ObjectId
     email: string,
     username: string,
@@ -8,15 +9,18 @@ export interface IUserProfile {
     profile_url?: string,
     lastLogin: Date,
     createdAt: Date,
+    updatedAt: Date,
 }
 
 const userSchema = new Schema({
     email: {
         type: String,
+        unique: true,
         required: true,
     },
     username: {
         type: String,
+        unique: true,
         required: true
     },
     password: {
@@ -28,10 +32,6 @@ const userSchema = new Schema({
         type: Date,
         default: 0
     },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-    },
-});
+}, { timestamps: true });
 
-export default mongoose.model<IUserProfile>('user', userSchema);
+export default mongoose.model<UserDocument>('user', userSchema);

@@ -1,7 +1,6 @@
 import express from "express";
-import { sendError, sendData, sendSuccess } from "../utils/request-util";
-import UserProfile, { IUserProfile } from "../models/user/user.profile";
-import { generateToken } from "../utils/jwt";
+import { sendError, sendData } from "../utils/request-util";
+import UserProfile, { UserDocument } from "../models/user/user.profile";
 import argon2 from "argon2";
 
 const router = express.Router();
@@ -9,38 +8,58 @@ const router = express.Router();
 router.post('/login', async (req, res) => {
     const { user, password } = req.body;
     if (!user || !password)
-        return sendError(res, { error: 'Missing parameters!', code: 404 });
+        return sendError(res, { message: 'Missing parameters!', code: 404 });
 
-    const userObject: IUserProfile = await UserProfile.findOne({})
+    const userObject: UserDocument = await UserProfile.findOne({})
         .or([{ 'username': user }, { 'email': user }]).lean();
     const verified = await argon2.verify(userObject.password, password);
 
     if (verified) {
-        const token = generateToken({ userId: userObject._id }, '3600s');
+        // regenerate the session to prevent session fixation attack vectors
+        req.session.regenerate(error => {
+            if (error)
+                return sendError(res, { message: 'Login failed.' });
 
-        res.cookie('token', token, {
-            secure: true,
-            sameSite: 'lax', // TODO: Change this after!
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 14
+            // store database user in session object (to be saved)
+            req.session.userId = userObject._id.toString();
+
+            // save the new session to database
+            req.session.save(error => {
+                if (error)
+                    return sendError(res, { message: 'Login failed.' });
+            });
         });
+        UserProfile.updateOne(userObject, { lastLogin: new Date(Date.now()) });
+        return res.sendStatus(200);
+    } else sendError(res, { message: 'Login failed.' });
+});
 
-        await UserProfile.updateOne(userObject, { lastLogin: new Date(Date.now()) });
+router.get('/logout', (req, res) => {
+    req.session.userId = null;
 
-        sendData(res, { token });
-    } else sendError(res, { error: 'Login failed.' });
+    // clear user in session object (to be saved)
+    req.session.save(error => {
+        if (error)
+            return sendError(res, { message: 'An error has occurred during the logout process.' });
+
+        // regenerate the session to prevent session fixation attack vectors
+        req.session.regenerate(error => {
+            if (error)
+                return sendError(res, { message: 'An error has occurred during the logout process.' });
+        });
+    });
 });
 
 router.post('/register', async (req, res) => {
     const { email, username, password } = req.body;
     if (!email || !username || !password)
-        return sendError(res, { error: 'Missing parameters!' });
+        return sendError(res, { message: 'Missing parameters!' });
 
     else {
         argon2.hash(password).then(hashed => {
             UserProfile.create({ email, username, password: hashed }, (error, result) => {
                 if (error)
-                    sendError(res, { error: 'An error has occurred during the registration process.' });
+                    sendError(res, { message: 'An error has occurred during the registration process.' });
 
                 else sendData(res, { user: result });
             });
