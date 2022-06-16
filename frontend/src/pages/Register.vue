@@ -1,3 +1,15 @@
+<script lang="ts" setup>
+import { useSecurityStore } from "../stores/security";
+import RegisterForm from '../components/Form/RegisterForm.vue';
+import Logo from '../components/Logo.vue';
+
+const securityStore = useSecurityStore();
+
+const onSubmit = async ({ email, username, password }: any) => {
+  await securityStore.register(email, username, password);
+};
+</script>
+
 <template>
   <div class="flex flex-col w-full h-full items-center justify-center">
     <div class="flex w-full flex-col items-center justify-center space-y-4 mb-6">
@@ -7,16 +19,3 @@
     <RegisterForm :on-submit="onSubmit"/>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { useSecurityStore } from "../stores/security";
-
-const securityStore = useSecurityStore();
-
-const onSubmit = async ({ email, username, password }: any) => {
-  await securityStore.register(email, username, password);
-};
-
-import RegisterForm from '../components/Form/RegisterForm.vue';
-import Logo from '../components/Logo.vue';
-</script>
