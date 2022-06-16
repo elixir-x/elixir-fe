@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserDocument } from "../models/user/user.profile";
 import "express-session";
 
 declare module 'express-serve-static-core' {

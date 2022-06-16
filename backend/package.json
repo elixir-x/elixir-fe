@@ -1,7 +1,7 @@
 {
   "name": "elixir-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.ts",
   "license": "MIT",
   "dependencies": {
     "@types/cors": "^2.8.12",
@@ -21,6 +21,7 @@
     "typescript": "^4.7.3"
   },
   "scripts": {
-    "dev": "DEBUG=express-session nodemon ./main.ts"
+    "dev": "DEBUG=express-session nodemon --transpile-only --pretty ./main.ts",
+    "build": "tsc --build"
   }
 }
