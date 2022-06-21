@@ -1,8 +1,7 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import argon2 from "argon2";
 
-export interface UserDocument {
-    _id: Types.ObjectId
+export interface IUser extends Document {
     email: string,
     username: string,
     password: string,
@@ -12,7 +11,15 @@ export interface UserDocument {
     updatedAt: Date,
 }
 
-const userSchema = new Schema({
+export interface IUserDocument extends IUser, Document {
+    checkPassword: (password: string) => Promise<boolean>;
+}
+
+interface IUserModel extends Model<IUserDocument> {
+    findByUsername: (username: string) => Promise<IUserDocument>;
+}
+
+const UserSchema: Schema<IUserDocument> = new Schema({
     email: {
         type: String,
         unique: true,
@@ -28,10 +35,16 @@ const userSchema = new Schema({
         required: true,
     },
     profile_url: String,
-    lastLogin: {
-        type: Date,
-        default: 0
-    },
+    lastLogin: Date,
 }, { timestamps: true });
 
-export default mongoose.model<UserDocument>('user', userSchema);
+UserSchema.pre('save', async function(next) {
+    this.password = await argon2.hash(this.password);
+    next();
+});
+
+UserSchema.methods.checkPassword = async function (password: string) {
+    return await argon2.verify(this.password, password);
+};
+
+export default mongoose.model<IUserDocument, IUserModel>('User', UserSchema);

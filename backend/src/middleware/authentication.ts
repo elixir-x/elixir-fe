@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { IUser, IUserDocument } from "../models/user/user.profile";
+import { Document, Types } from "mongoose";
 import "express-session";
 
 declare module 'express-serve-static-core' {
@@ -7,12 +9,12 @@ declare module 'express-serve-static-core' {
 
 declare module 'express-session' {
     export interface SessionData {
-        userId: string | null;
+        user: IUserDocument & {_id: any} | null;
     }
 }
 
 export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    if (req.session.userId)
+    if (req.session.user)
         return next();
     else return res.sendStatus(401);
 };
