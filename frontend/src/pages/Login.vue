@@ -8,8 +8,9 @@ const router = useRouter();
 const securityStore = useSecurityStore();
 
 const onSubmit = async ({ username, password }: any) => {
-  await securityStore.login(username, password)
-      .then(() => router.push({ path: '/dashboard', replace: true }));
+  const success = await securityStore.login(username, password);
+  // if (success)
+  //   await router.push({ path: '/dashboard', replace: true });
 };
 </script>
 
@@ -19,7 +20,7 @@ const onSubmit = async ({ username, password }: any) => {
       <Logo width="96" height="96" class="fill-violet-600"/>
       <span class="text-3xl font-semibold">Login</span>
     </div>
-    <LoginForm :on-submit="onSubmit"/>
+    <LoginForm @onsubmit="onSubmit" />
     {{ securityStore.user }}
   </div>
 </template>

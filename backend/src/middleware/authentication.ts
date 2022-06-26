@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { IUser, IUserDocument } from "../models/user/user.profile";
-import { Document, Types } from "mongoose";
+import { IUserDocument } from "../models/user/user.profile";
 import "express-session";
 
 declare module 'express-serve-static-core' {

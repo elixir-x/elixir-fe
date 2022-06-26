@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { mixed, object, string } from "yup";
+import { object, string } from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 
-interface LoginFormProps {
-  onSubmit: (values: any) => void
-}
+defineEmits<{ (e: 'onsubmit', values: any): void }>();
+
 const loginSchema = object({
   username: string()
       .required("You must specify a username.")
@@ -15,12 +14,11 @@ const loginSchema = object({
       .min(8, "Your password must be at least 8 characters.")
 });
 
-defineProps<LoginFormProps>()
-
 </script>
 
 <template>
-  <Form @submit="onSubmit" class="form" :validation-schema="loginSchema">
+  <Form v-slot="{ values }" @submit="$emit('onsubmit', values)" class="form" :validation-schema="loginSchema">
+    {{ values }}
     <div class="fields wrapper">
 
       <label for="username">Username</label>

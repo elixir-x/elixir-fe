@@ -34,9 +34,19 @@ router.get('/users', async (req, res) => {
     UserProfile
         .find({}, '-_id username email')
         .exec((error, result) => {
-            if (error || result === null)
+            if (error || !result.length)
                 sendError(res, { message: 'No users found!', code: 404 });
             else sendData(res, result);
+        });
+});
+
+router.get('/check-username', async (req, res) => {
+    UserProfile
+        .find({ username: req.query.username })
+        .exec((error, result) => {
+            if (error || !result.length)
+                res.sendStatus(200);
+            else res.sendStatus(422);
         });
 });
 

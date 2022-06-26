@@ -22,10 +22,9 @@ router.post('/login', async (req, res) => {
                     });
                     doc.lastLogin = new Date(Date.now());
                     await doc.save();
-                    return res.sendStatus(200);
+                    res.sendStatus(200);
                 }
-            }
-            sendError(res, { message: 'Login failed.' });
+            } else sendError(res, { message: 'Login failed.' });
         });
 });
 

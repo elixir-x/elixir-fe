@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-full bg-neutral-900">
-    <router-view />
+    <RouterView />
   </div>
 </template>
 
