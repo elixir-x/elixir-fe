@@ -4,7 +4,7 @@
 
 #### Certificates
 + install [mkcert](https://github.com/FiloSottile/mkcert) and generate localhost certificates, put them in the root of the project.
-+ pass them to the startup scripts for both `frontend` and `backend`
++ rename your certificates to `cert.pem` and `cert-key.pem` respectively.
 + run `yarn dev` for both `frontend` and `backend` programs, you're all set up!
 #### Environment Variables
 + rename the `.env.example` to `.env`
