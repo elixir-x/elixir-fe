@@ -1,11 +1,16 @@
 ## Elixir Platform
 
-### Installation
+### Installation (for local development)
 
+#### Certificates
 + install [mkcert](https://github.com/FiloSottile/mkcert) and generate localhost certificates, put them in the root of the project.
 + pass them to the startup scripts for both `frontend` and `backend`
 + run `yarn dev` for both `frontend` and `backend` programs, you're all set up!
-
+#### Environment Variables
++ rename the `.env.example` to `.env`
++ Generate a session secret by opening your terminal and running `node`
+then running `require('crypto').randomBytes(64).toString('hex')` to generate a secret
+and put it into the `SECRET` field in the `.env` file.
 ### Build
 + Run `yarn build` for both `frontend` and `backend`
 + You are now ready to deploy for production!
