@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
-import { Field, Form, ErrorMessage } from "vee-validate";
-import { object, string, ValidationError } from "yup";
+import {RouterLink} from "vue-router";
+import {Field, Form, ErrorMessage} from "vee-validate";
+import {object, string, ValidationError} from "yup";
 
 const emit = defineEmits<{
-  (e: 'submit', values: any): void,
+  (e: 'onSubmit', values: any): void,
   (e: 'checkUsername', username: string): void
 }>();
 
 const props = defineProps<{
-  usernameAvailable: Promise<boolean | ValidationError>
+  // usernameAvailable: Promise<boolean | ValidationError>
 }>();
 
 const registerSchema = object({
@@ -19,10 +19,10 @@ const registerSchema = object({
   username: string()
       .required("You must specify a username.")
       .min(4, "Your username must be at least 4 characters.")
-      .max(32, "Your username cannot be longer than 32 characters.")
-      .test('checkUsername', function () {
-        return props.usernameAvailable;
-      }),
+      .max(32, "Your username cannot be longer than 32 characters."),
+  // .test('checkUsername', function () {
+  //   return props.usernameAvailable;
+  // }),
   password: string()
       .required("You must enter a password.")
       .min(8, "Your password must be at least 8 characters.")
@@ -40,7 +40,7 @@ const onKeyUp = (username: string) => {
 </script>
 
 <template>
-  <Form v-slot="{ values }" @submit="$emit('submit', values)" class="form" :validation-schema="registerSchema">
+  <Form class="form" v-slot="{ values }" @submit="(values) => $emit('onSubmit', values)" :validation-schema="registerSchema">
     <div class="fields wrapper">
 
       <label for="email">Email</label>
@@ -51,7 +51,7 @@ const onKeyUp = (username: string) => {
 
       <label for="username">Username</label>
       <div class="wrapper">
-        <Field type="text" name="username" @keyup="() => onKeyUp(values.username)" />
+        <Field type="text" name="username" @keyup="() => onKeyUp(values.username)"/>
         <ErrorMessage name="username" class="error"/>
       </div>
 
@@ -62,7 +62,7 @@ const onKeyUp = (username: string) => {
       </div>
 
       <div class="text-sm text-neutral-300">
-        <Field type="checkbox" name="terms" class="check" />
+        <Field type="checkbox" name="terms" class="check"/>
         <span> Please accept the </span>
         <a href="/terms" class="link-primary">terms and conditions.</a>
       </div>

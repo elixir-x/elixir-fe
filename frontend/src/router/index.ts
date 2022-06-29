@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHistory, NavigationGuardNext, RouteRecordRaw } from "vue-router";
 import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 import Dashboard from '../pages/Dashboard.vue';
+import { useSecurityStore } from "../stores/security";
 
 const routes: RouteRecordRaw[] = [
     {
@@ -34,11 +35,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.secure && to.path !== '/login') {
-        // TODO: handle login
-        return next('/login');
-    }
-    return next();
+    const securityStore = useSecurityStore();
+    handleRedirect(to.path, securityStore.isLoggedIn, to.meta.secure as boolean, next);
 });
+
+const handleRedirect = (path: string, loggedIn: boolean, secure: boolean, next: NavigationGuardNext) => {
+    if (loggedIn) {
+        if (path === '/login')
+            return next('/dashboard');
+    } else if (secure)
+        return next('/login');
+    else return next();
+}
 
 export default router;

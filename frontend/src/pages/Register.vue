@@ -28,6 +28,6 @@ const onCheckUsername = async (username: string) => {
       <Logo width="96" height="96" class="fill-violet-600"/>
       <span class="text-3xl font-semibold">Create an account</span>
     </div>
-    <RegisterForm @submit="onSubmit" @checkUsername="onCheckUsername" :usernameAvailable="usernameAvailable"/>
+    <RegisterForm @on-submit="onSubmit" @checkUsername="onCheckUsername" :usernameAvailable="usernameAvailable" />
   </div>
 </template>

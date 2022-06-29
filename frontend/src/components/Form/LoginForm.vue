@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router";
 import { object, string } from "yup";
 import { Form, Field, ErrorMessage } from "vee-validate";
 
-defineEmits<{ (e: 'onsubmit', values: any): void }>();
+defineEmits<{ (e: 'onSubmit', values: Object): void }>();
 
 const loginSchema = object({
   username: string()
@@ -17,7 +17,7 @@ const loginSchema = object({
 </script>
 
 <template>
-  <Form v-slot="{ values }" @submit="$emit('onsubmit', values)" class="form" :validation-schema="loginSchema">
+  <Form #="{ values }" @submit="(values) => $emit('onSubmit', values)" class="form" :validation-schema="loginSchema">
     {{ values }}
     <div class="fields wrapper">
 

@@ -47,7 +47,7 @@ const startup = () => {
 
 console.log('Starting backend...');
 
-mongoose.connect("mongodb://127.0.0.1:27017/elixir", {
+mongoose.connect(process.env.MONGO_URL as string, {
         connectTimeoutMS: 3000,
         serverSelectionTimeoutMS: 5000,
     }).then(startup).catch(console.log);
