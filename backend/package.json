@@ -24,5 +24,7 @@
     "dev": "DEBUG=express-session nodemon --transpile-only --pretty ./main.ts",
     "build": "tsc --build"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  }
 }
