@@ -6,6 +6,8 @@ import userRouter from "./src/routers/user";
 import securityRouter from "./src/routers/security";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import https from "https";
+import { readFileSync } from "fs";
 
 dotenv.config();
 
@@ -17,8 +19,9 @@ const mongoStore = MongoStore.create({
     ttl: 60 * 60 * 24 * 14
 });
 
-const startup = () => {
+const startup = async () => {
     console.log('Mongoose database has been connected.');
+
     app.use(express.json())
         .use(express.urlencoded({ extended: true }))
         .use(cors({
@@ -32,16 +35,20 @@ const startup = () => {
             saveUninitialized: false,
             store: mongoStore,
             cookie: {
-                secure: false,
+                secure: true,
                 httpOnly: true,
+                sameSite: 'none',
                 maxAge: 1000 * 60 * 60 * 24 * 14,
             }
         }));
 
     app.use('/api/v1/', userRouter, securityRouter);
 
-    app.listen(process.env.PORT, () => {
-        console.log(`Elixir backend is listening on port ${process.env.PORT}.`)
+    https.createServer({
+        cert: readFileSync('.././cert.pem'),
+        key: readFileSync('.././cert-key.pem'),
+    }, app).listen(process.env.PORT, undefined, () => {
+        console.log(`Elixir backend is listening on port ${process.env.PORT}.`);
     });
 }
 

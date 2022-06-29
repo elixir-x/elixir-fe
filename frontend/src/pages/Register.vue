@@ -13,11 +13,11 @@ const onSubmit = async ({ email, username, password }: any) => {
   await securityStore.register(email, username, password);
 };
 
-const usernameAvailable = ref<boolean | ValidationError>();
+// const usernameAvailable = ref<boolean | ValidationError>();
 
 const onCheckUsername = async (username: string) => {
-  usernameAvailable.value = await checkUsername(username);
-  console.log(usernameAvailable.value);
+  // usernameAvailable.value = await checkUsername(username);
+  // console.log(usernameAvailable.value);
 };
 
 </script>
@@ -28,6 +28,6 @@ const onCheckUsername = async (username: string) => {
       <Logo width="96" height="96" class="fill-violet-600"/>
       <span class="text-3xl font-semibold">Create an account</span>
     </div>
-    <RegisterForm @on-submit="onSubmit" @checkUsername="onCheckUsername" :usernameAvailable="usernameAvailable" />
+    <RegisterForm @on-submit="onSubmit" @check-username="onCheckUsername" />
   </div>
 </template>

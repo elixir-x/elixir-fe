@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {RouterLink} from "vue-router";
-import {Field, Form, ErrorMessage} from "vee-validate";
-import {object, string, ValidationError} from "yup";
+import { RouterLink } from "vue-router";
+import { Field, Form, ErrorMessage } from "vee-validate";
+import { object, string } from "yup";
 
 const emit = defineEmits<{
   (e: 'onSubmit', values: any): void,
@@ -40,7 +40,8 @@ const onKeyUp = (username: string) => {
 </script>
 
 <template>
-  <Form class="form" v-slot="{ values }" @submit="(values) => $emit('onSubmit', values)" :validation-schema="registerSchema">
+  <Form class="form" v-slot="{ values }" @submit="(values) => $emit('onSubmit', values)"
+        :validation-schema="registerSchema">
     <div class="fields wrapper">
 
       <label for="email">Email</label>
