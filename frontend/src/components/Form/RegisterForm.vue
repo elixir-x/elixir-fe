@@ -42,22 +42,22 @@ const onKeyUp = (username: string) => {
 <template>
   <Form class="form" v-slot="{ values }" @submit="(values) => $emit('onSubmit', values)"
         :validation-schema="registerSchema">
-    <div class="fields wrapper">
+    <div class="fields field-wrapper">
 
       <label for="email">Email</label>
-      <div class="wrapper">
+      <div class="field-wrapper">
         <Field type="text" name="email"/>
         <ErrorMessage name="email" class="error"/>
       </div>
 
       <label for="username">Username</label>
-      <div class="wrapper">
+      <div class="field-wrapper">
         <Field type="text" name="username" @keyup="() => onKeyUp(values.username)"/>
         <ErrorMessage name="username" class="error"/>
       </div>
 
       <label for="password">Password</label>
-      <div class="wrapper">
+      <div class="field-wrapper">
         <Field type="password" name="password"/>
         <ErrorMessage name="password" class="error"/>
       </div>
@@ -82,10 +82,6 @@ const onKeyUp = (username: string) => {
   @apply text-sm mt-1 text-red-500
 }
 
-.wrapper {
-  @apply flex flex-wrap flex-col
-}
-
 form {
   @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6
   shadow-xl;
@@ -97,10 +93,6 @@ form > * {
 
 .fields > * {
   @apply w-full transition-all duration-100 mt-1.5 mb-1.5;
-}
-
-label {
-  @apply text-white text-sm font-medium;
 }
 
 button {

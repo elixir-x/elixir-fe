@@ -5,12 +5,15 @@ import RegisterForm from '../components/Form/RegisterForm.vue';
 import Logo from '../components/Logo.vue';
 import { checkUsername } from "../utils/user-fetch";
 import { ValidationError } from "yup";
+import { useRouter } from "vue-router";
 
 const securityStore = useSecurityStore();
+const router = useRouter();
 
 const onSubmit = async ({ email, username, password }: any) => {
   await onCheckUsername(username);
   await securityStore.register(email, username, password);
+  router.push('/email-verification')
 };
 
 // const usernameAvailable = ref<boolean | ValidationError>();

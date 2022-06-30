@@ -19,16 +19,16 @@ const loginSchema = object({
 <template>
   <Form #="{ values }" @submit="(values) => $emit('onSubmit', values)" class="form" :validation-schema="loginSchema">
     {{ values }}
-    <div class="fields wrapper">
+    <div class="fields field-wrapper">
 
       <label for="username">Username</label>
-      <div class="wrapper">
+      <div class="field-wrapper">
         <Field type="text" name="username" />
         <ErrorMessage name="username" class="error" />
       </div>
 
       <label for="password">Password</label>
-      <div class="wrapper">
+      <div class="field-wrapper">
         <Field type="password" name="password" />
         <ErrorMessage name="password" class="error" />
       </div>
@@ -45,9 +45,6 @@ const loginSchema = object({
 <style scoped>
 .error {
   @apply text-sm mt-1 text-red-500
-}
-.wrapper {
-  @apply flex flex-wrap flex-col
 }
 form {
   @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6
