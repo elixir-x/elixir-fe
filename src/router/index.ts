@@ -49,6 +49,7 @@ const routes: RouteRecordRaw[] = [
         path: '/email-verification',
         name: 'EmailVerification',
         component: EmailVerification,
+        props: true,
         meta: {}
     }
 ];
