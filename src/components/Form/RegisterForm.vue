@@ -1,15 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import { RouterLink } from "vue-router";
 import { Field, Form, ErrorMessage } from "vee-validate";
-import { object, string } from "yup";
+import { object, string, ValidationError } from "yup";
 
 const emit = defineEmits<{
   (e: 'onSubmit', values: any): void,
   (e: 'checkUsername', username: string): void
-}>();
-
-const props = defineProps<{
-  // usernameAvailable: Promise<boolean | ValidationError>
 }>();
 
 const registerSchema = object({

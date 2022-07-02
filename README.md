@@ -5,12 +5,7 @@
 #### Certificates
 + install [mkcert](https://github.com/FiloSottile/mkcert) and generate localhost certificates, put them in the root of the project.
 + rename your certificates to `cert.pem` and `cert-key.pem` respectively.
-+ run `yarn dev` for both `frontend` and `backend` programs, you're all set up!
-#### Environment Variables
-+ rename the `.env.example` to `.env`
-+ Generate a session secret by opening your terminal and running `node`
-then running `require('crypto').randomBytes(64).toString('hex')` to generate a secret
-and put it into the `SECRET` field in the `.env` file.
++ run `yarn dev` to start the frontend project, you're all set up!
 ### Build
-+ Run `yarn build` for both `frontend` and `backend`
++ Run `yarn build` to build the frontend project.
 + You are now ready to deploy for production!

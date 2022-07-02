@@ -7,8 +7,8 @@ export default defineConfig({
   plugins: [vue()],
   server: {
     https: {
-      cert: readFileSync('.././cert.pem'),
-      key: readFileSync('.././cert-key.pem'),
+      cert: readFileSync('./cert.pem'),
+      key: readFileSync('./cert-key.pem'),
     }
   }
 })

@@ -13,7 +13,7 @@ const router = useRouter();
 const onSubmit = async ({ email, username, password }: any) => {
   await onCheckUsername(username);
   await securityStore.register(email, username, password);
-  router.push('/email-verification')
+  await router.push({ path: '/email-verification', params: { username: username, token: 'eduardo' } });
 };
 
 // const usernameAvailable = ref<boolean | ValidationError>();
