@@ -32,8 +32,6 @@ jobs:
       
       - name: Create dotenv
         uses: iamsauravsharma/create-dotenv@v1.2.1
-        with:
-          directory: $GITHUB_WORKSPACE
       
       - name: Build Project
         run: yarn build
