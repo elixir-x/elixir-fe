@@ -6,7 +6,7 @@ import router from './router';
 import '../index.css';
 import dotenv from 'dotenv';
 
-dotenv.config();
+// dotenv.config();
 
 const pinia = createPinia();
 pinia.use(createPersistedState());

@@ -16,27 +16,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      API_BASE_URL: 'https://elixir.rocks/api/v1'
-      
+      VITE_API_BASE_URL: 'https://elixir.rocks/api/v1'
+
     steps:
       - name: Checkout Files
         uses: actions/checkout@v3
-      
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '18.4.0'
-          
+
       - name: Install Dependencies
         run: yarn install
-      
+
       - name: Create dotenv
         uses: iamsauravsharma/create-dotenv@v1.2.1
-      
+
       - name: Build Project
         run: yarn build
-        
-      - name: Deploy with rsync
+
+      - name: Deploy with Rsync
         uses: burnett01/rsync-deployments@5.2
         with:
           switches: -avzr --delete
@@ -44,5 +44,4 @@ jobs:
           remote_path: /var/lib/docker/volumes/nginx
           remote_host: ${{ secrets.SSH_HOST }}
           remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }} 
-      
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
