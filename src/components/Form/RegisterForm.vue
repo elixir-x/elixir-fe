@@ -20,7 +20,7 @@ const { value: username, errorMessage: usernameError, setErrors: setUsernameErro
     toFieldValidator(
         string({ required_error: "You must specify a username.", invalid_type_error: "You must specify a username." })
             .min(3, "Your username must be at least 3 characters.")
-            .max(48, "Your username cannot be longer than 32 characters.")
+            .max(48, "Your username cannot be longer than 48 characters.")
     ), { validateOnValueUpdate: true });
 
 const { value: password, errorMessage: passwordError } = useField("password", toFieldValidator(
@@ -32,7 +32,7 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } = useField(
     string({ required_error: "You must enter a password.", invalid_type_error: "You must enter a password." })
         .min(8, "Your password must be at least 8 characters.")
         .max(128, "Your password cannot be longer than 128 characters.")
-        .refine((val) => val === password.value, 'Passwords don\'t match')
+        .refine((val) => val === password.value, 'Passwords don\'t match.')
 ), { validateOnValueUpdate: true });
 
 

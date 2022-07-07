@@ -7,9 +7,9 @@ import { useForm } from "vee-validate";
 
 const router = useRouter();
 const securityStore = useSecurityStore();
-const { handleSubmit, isSubmitting } = useForm();
+const { handleSubmit } = useForm();
 
-const onSubmit = handleSubmit(async ({ username, password }) => {
+const onSubmit = handleSubmit(async ({ username, password }: any) => {
     const success = await securityStore.login(username, password);
     if (success)
         await router.push({ path: '/dashboard', replace: true });

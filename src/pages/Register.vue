@@ -10,7 +10,7 @@ const router = useRouter();
 
 const { handleSubmit, isSubmitting } = useForm();
 
-const onSubmit = handleSubmit(async ({email, username, password}) => {
+const onSubmit = handleSubmit(async ({email, username, password}: any) => {
     console.log('submit');
     await securityStore.register(email, username, password);
     await router.push({ path: `/email-verification` });
