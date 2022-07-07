@@ -4,11 +4,6 @@ import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import { string } from "zod";
 import http from "../../../http-common";
-import { checkUsername } from "../../utils/user-fetch";
-
-const emit = defineEmits<{
-    (e: 'onSubmit', values: any): void,
-}>();
 
 const { value: email, errorMessage: emailError } = useField("email",
     toFieldValidator(

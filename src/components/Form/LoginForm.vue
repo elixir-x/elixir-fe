@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { object, string } from "zod";
-import { useForm } from "vee-validate";
+import { string } from "zod";
+import { useField } from "vee-validate";
+import { toFieldValidator } from "@vee-validate/zod";
 
-const emit = defineEmits<{ (e: 'submit', values: Object): void }>();
+const { value: username, errorMessage: usernameError } = useField("username",
+    toFieldValidator(
+        string({ required_error: "You must specify a username.", invalid_type_error: "You must specify a username." })
+    ), { validateOnValueUpdate: true });
 
-const loginSchema = object({
-    username: string({
-        required_error: "You must specify a username.",
-    }),
-    password: string({
-        required_error: "You must enter a password."
-    })
-});
+const { value: password, errorMessage: passwordError } = useField("password", toFieldValidator(
+    string({ required_error: "You must enter a password.", invalid_type_error: "You must enter a password." })
+), { validateOnValueUpdate: true });
 </script>
 
 <template>
@@ -21,12 +20,14 @@ const loginSchema = object({
 
             <label for="username">Username</label>
             <div class="field-wrapper">
-                <input name="username"/>
+                <input type="text" v-model="username"/>
+                <span class="error">{{ usernameError }}</span>
             </div>
 
             <label for="password">Password</label>
             <div class="field-wrapper">
-                <input type="password" name="password"/>
+                <input type="text" v-model="password"/>
+                <span class="error">{{ passwordError }}</span>
             </div>
 
         </div>

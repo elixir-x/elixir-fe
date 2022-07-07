@@ -8,7 +8,7 @@ import { useForm } from "vee-validate";
 const securityStore = useSecurityStore();
 const router = useRouter();
 
-const { handleSubmit, isSubmitting } = useForm();
+const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit(async ({email, username, password}: any) => {
     console.log('submit');
