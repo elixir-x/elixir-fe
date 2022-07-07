@@ -1,36 +1,29 @@
 <script lang="ts" setup>
-import { ref } from "vue";
 import { useSecurityStore } from "../stores/security";
 import RegisterForm from '../components/Form/RegisterForm.vue';
 import Logo from '../components/Logo.vue';
-import { checkUsername } from "../utils/user-fetch";
-import { ValidationError } from "yup";
 import { useRouter } from "vue-router";
+import { useForm } from "vee-validate";
 
 const securityStore = useSecurityStore();
 const router = useRouter();
 
-const onSubmit = async ({ email, username, password }: any) => {
-  await onCheckUsername(username);
-  await securityStore.register(email, username, password);
-  await router.push({ path: '/email-verification', params: { username: username, token: 'eduardo' } });
-};
+const { handleSubmit, isSubmitting } = useForm();
 
-// const usernameAvailable = ref<boolean | ValidationError>();
-
-const onCheckUsername = async (username: string) => {
-  // usernameAvailable.value = await checkUsername(username);
-  // console.log(usernameAvailable.value);
-};
+const onSubmit = handleSubmit(async ({email, username, password}) => {
+    console.log('submit');
+    await securityStore.register(email, username, password);
+    await router.push({ path: `/email-verification` });
+});
 
 </script>
 
 <template>
-  <div class="flex flex-col w-full h-full items-center justify-center">
-    <div class="flex w-full flex-col items-center justify-center space-y-4 mb-6">
-      <Logo width="96" height="96" class="fill-violet-600"/>
-      <span class="text-3xl font-semibold">Create an account</span>
+    <div class="flex flex-col w-full h-full items-center justify-center">
+        <div class="flex w-full flex-col items-center justify-center space-y-4 mb-6">
+            <Logo width="96" height="96" class="fill-violet-600"/>
+            <span class="text-3xl font-semibold">Create an account</span>
+        </div>
+        <RegisterForm @submit="onSubmit"/>
     </div>
-    <RegisterForm @on-submit="onSubmit" @check-username="onCheckUsername" />
-  </div>
 </template>

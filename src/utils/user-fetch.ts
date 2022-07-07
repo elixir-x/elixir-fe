@@ -1,9 +1,14 @@
 import http from "../../http-common";
-import { ValidationError } from "yup";
+import { RouterLink } from "vue-router";
+import { useForm, useField } from "vee-validate";
+import { toFieldValidator } from "@vee-validate/zod";
+import { string } from "zod";
 
-export const checkUsername = async (username: string): Promise<boolean | ValidationError> => {
+export const checkUsername = async (username: string): Promise<boolean> => {
     try {
-        const response = await http.get(`/check-username?username=${username}`)
+        const response = await http.get(`/check-username?username=${username}`);
         return response.status === 200;
-    } catch (e) { return false }
+    } catch (e) {
+        return false;
+    }
 };

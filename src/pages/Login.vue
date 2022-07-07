@@ -3,15 +3,18 @@ import { useSecurityStore } from "../stores/security";
 import { useRouter } from "vue-router";
 import LoginForm from '../components/Form/LoginForm.vue';
 import Logo from '../components/Logo.vue';
+import { useForm } from "vee-validate";
 
 const router = useRouter();
 const securityStore = useSecurityStore();
+const { handleSubmit, isSubmitting } = useForm();
 
-const onSubmit = async ({ username, password }: any) => {
-  const success = await securityStore.login(username, password);
-  if (success)
-    await router.push({ path: '/dashboard', replace: true });
-};
+const onSubmit = handleSubmit(async ({ username, password }) => {
+    const success = await securityStore.login(username, password);
+    if (success)
+        await router.push({ path: '/dashboard', replace: true });
+});
+
 </script>
 
 <template>
@@ -20,7 +23,6 @@ const onSubmit = async ({ username, password }: any) => {
       <Logo width="96" height="96" class="fill-violet-600" />
       <span class="text-3xl font-semibold">Login</span>
     </div>
-    <LoginForm @on-submit="onSubmit"/>
-    {{ securityStore.user }}
+    <LoginForm @submit="onSubmit"/>
   </div>
 </template>

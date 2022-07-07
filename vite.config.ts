@@ -8,6 +8,9 @@ export default defineConfig(({ command, mode }) => {
     const config: UserConfig = {
         plugins: [ vue() ],
         envPrefix: "ELIXIR_",
+        server: {
+            https: true
+        }
     };
 
     if (mode === 'dev') {
@@ -20,11 +23,6 @@ export default defineConfig(({ command, mode }) => {
                 }
             }
         }
-    } else return {
-        ...config,
-        server: {
-            https: true
-        }
-    }
+    } else return config;
 
 });
