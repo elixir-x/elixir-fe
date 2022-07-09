@@ -34,17 +34,16 @@ const { value: confirmPassword, errorMessage: confirmPasswordError } = useField(
 let timer: NodeJS.Timeout;
 
 const onKeyUp = () => {
+    // check if there is already an error being displayed
     if (usernameError.value !== undefined) return;
+
+    // delay between checking the api for an available username
     clearTimeout(timer);
     timer = setTimeout(async () => {
-        try {
-            const response = await http.get(`/check-username?username=${username.value}`);
-            if (response.status !== 200)
-                setUsernameErrors('This username has been taken.');
-            else setUsernameErrors('This username is available.');
-        } catch (e) {
+        const response = await http.get(`/check-username?username=${username.value}`);
+        if (response.status !== 200)
             setUsernameErrors('This username has been taken.');
-        }
+        else setUsernameErrors('This username is available.');
     }, 1000);
 };
 
@@ -75,7 +74,7 @@ const onKeyUp = () => {
             <label for="confirm-password">Confirm Password</label>
             <div class="field-wrapper">
                 <input type="password" name="confirm-password" v-model="confirmPassword"/>
-                <span class="error">{{ passwordError }}</span>
+                <span class="error">{{ confirmPasswordError }}</span>
             </div>
 
             <div class="text-sm text-neutral-300">

@@ -1,44 +1,80 @@
 <script lang="ts" setup>
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import http from "../../http-common";
+import http, { handleResponse } from "../../http-common";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { string } from "zod";
+import { XIcon } from "@heroicons/vue/solid";
+import { toFieldValidator } from "@vee-validate/zod";
 
 const route = useRoute();
 
-onMounted(() => {
-  http.get(`/email-verification?token=${route.params.token}`)
-      .then(response => {
+const exists = ref(false);
+const incorrectModal = ref(false);
+const notFoundMessage = ref<string>();
 
-      });
+onMounted(async () => {
+    const res = await handleResponse(http.get(`/email-verification?token=${route.query.token}`));
+    exists.value = res.success;
+    notFoundMessage.value = res.message;
 });
+
+const onVerify = async ({ code }: any) => {
+    const res = await handleResponse(http.get(`/email-verification?token=${route.query.token}&code=${code}`));
+    incorrectModal.value = !res.success;
+};
+
+const codeValidator = toFieldValidator(
+    string({
+        required_error: 'A code must be entered.',
+        invalid_type_error: 'You must specify a code.'
+    })
+        .min(6, 'The code must be 6 digits long.')
+        .max(6, 'The code must be 6 digits long.')
+);
 
 </script>
 
 <template>
-  <div class="flex items-center justify-center w-full h-full">
-    <div class="flex space-y-4 flex-col p-6 rounded-md border border-neutral-700">
-      <span class="rounded-md p-2 bg-neutral-800 text-neutral-200 max-w-sm">We sent you an email verification code, please check your email
-        <span class="text-violet-500">{{ $route.params.username }}.</span>
+    <Form @submit="onVerify" v-if="exists" class="flex items-center justify-center w-full h-full">
+        <div class="flex space-y-4 flex-col p-6 rounded-md border border-neutral-700">
+      <span class="rounded-md p-2 bg-neutral-800 text-neutral-200 max-w-sm">We sent you an email verification code, please check your email.
       </span>
-      <div class="label flex flex-col space-y-2">
-        <label for="verification-code">Verification Code</label>
-        <input type="text" name="verification-code"/>
-        <span class="text-xs text-violet-500 cursor-pointer text-sm hover:text-violet-400">Resend code</span>
-      </div>
-      <div class="text-sm">
-        <input type="checkbox"/>
-        Don't ask to verify again on this computer.
-      </div>
-      <button class="btn-primary h-10">Verify Now</button>
+            <div class="label flex flex-col space-y-2">
+                <span v-if="incorrectModal" class="modal relative">
+                     The verification code entered was incorrect.
+                    <XIcon class="w-4 h-4 absolute right-3 cursor-pointer" @click="incorrectModal = !incorrectModal"/>
+                </span>
+                <label for="code">Verification Code</label>
+                <Field name="code" :rules="codeValidator"/>
+                <ErrorMessage name="verification-code" class="error"/>
+                <span class="text-xs text-violet-500 cursor-pointer text-sm hover:text-violet-400">Resend code</span>
+            </div>
+            <div class="text-sm">
+                <Field name="stay-verified" type="checkbox"/>
+                Don't ask to verify again on this device.
+            </div>
+            <button class="btn-primary h-10">Verify Now</button>
+        </div>
+    </Form>
+    <div v-else="!exists" class="flex items-center justify-center w-full h-full">
+        <div class="flex space-y-2 flex-col p-6 rounded-md border border-neutral-700 text-center">
+            <span>{{ notFoundMessage }}</span>
+            <span v-if="notFoundMessage">Sorry mate, go somewhere else.</span>
+        </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
-span {
-  @apply text-sm;
+.modal {
+    @apply flex items-center space-x-2 py-2 px-2 bg-purple-500/70 rounded-md shadow-2xl;
 }
+
+span {
+    @apply text-sm;
+}
+
 div, span {
-  @apply transition-all duration-200;
+    @apply transition-all duration-200;
 }
 </style>

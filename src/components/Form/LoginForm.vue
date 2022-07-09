@@ -26,7 +26,7 @@ const { value: password, errorMessage: passwordError } = useField("password", to
 
             <label for="password">Password</label>
             <div class="field-wrapper">
-                <input type="text" v-model="password"/>
+                <input type="password" v-model="password"/>
                 <span class="error">{{ passwordError }}</span>
             </div>
 
@@ -40,9 +40,6 @@ const { value: password, errorMessage: passwordError } = useField("password", to
 </template>
 
 <style scoped>
-.error {
-    @apply text-sm mt-1 text-red-500
-}
 
 form {
     @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6

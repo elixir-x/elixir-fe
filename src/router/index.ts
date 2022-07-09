@@ -33,7 +33,6 @@ const routes: RouteRecordRaw[] = [
         path: '/register',
         name: 'Register',
         component: Register,
-        meta: {}
     },
     {
         path: '/dashboard',
@@ -48,21 +47,23 @@ const routes: RouteRecordRaw[] = [
         path: '/email-verification',
         name: 'Email Verification',
         component: EmailVerification,
-        props: true,
-        meta: {}
+        props: route => ({ query: route.query.token })
     }
 ];
 
 const DEFAULT_TITLE = 'Elixir - %p';
 
 const router = createRouter({
-    history: createWebHistory('/'),
+    history: createWebHistory(),
     routes,
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const securityStore = useSecurityStore();
     nextTick().then(() => document.title = (to.meta.title as string || DEFAULT_TITLE).replace("%p", to.name as string));
+    if (!securityStore.fetched)
+        await securityStore.fetch();
+    console.log(securityStore.isLoggedIn);
     handleRedirect(to.path, securityStore.isLoggedIn, to.meta.secure as boolean, next);
 });
 
