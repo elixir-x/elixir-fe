@@ -23,7 +23,7 @@ const currentLayout = computed(() => {
 onMounted(async () => {
     if (route.meta.secure) {
         const res = await handleResponse(http.get('/user'));
-        securityStore.user = res.res.data;
+        securityStore.user = res.res?.data;
     }
 });
 

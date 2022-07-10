@@ -11,17 +11,17 @@ const route = useRoute();
 
 const exists = ref(false);
 const incorrectModal = ref(false);
-const notFoundMessage = ref<string>();
 
 onMounted(async () => {
-    const res = await handleResponse(http.get(`/email-verification?token=${route.query.token}`));
-    exists.value = res.success;
-    notFoundMessage.value = res.message;
+    if (route.query.token) {
+        const res = await handleResponse(http.get(`/email-verification?token=${route.query.token}`));
+        exists.value = res.code === 200;
+    }
 });
 
 const onVerify = async ({ code }: any) => {
     const res = await handleResponse(http.get(`/email-verification?token=${route.query.token}&code=${code}`));
-    incorrectModal.value = !res.success;
+    incorrectModal.value = res.code !== 200;
 };
 
 const codeValidator = toFieldValidator(
@@ -59,8 +59,8 @@ const codeValidator = toFieldValidator(
     </Form>
     <div v-else="!exists" class="flex items-center justify-center w-full h-full">
         <div class="flex space-y-2 flex-col p-6 rounded-md border border-neutral-700 text-center">
-            <span>{{ notFoundMessage }}</span>
-            <span v-if="notFoundMessage">Sorry mate, go somewhere else.</span>
+            <span>No email verification code was specified.</span>
+            <span>Sorry mate, go somewhere else.</span>
         </div>
     </div>
 </template>

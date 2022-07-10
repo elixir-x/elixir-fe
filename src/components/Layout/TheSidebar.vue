@@ -3,5 +3,7 @@
 </script>
 
 <template>
-  Sidebar
+    <div class="bg-green-900 w-64 h-full">
+
+    </div>
 </template>

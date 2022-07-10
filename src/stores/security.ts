@@ -19,49 +19,36 @@ export const useSecurityStore = defineStore('security', {
         }
     },
     actions: {
-        logout() {
-            this.user = null;
+        async logout() {
+            const logoutResponse = await http.get('/logout');
+            if (logoutResponse.status === 200)
+                this.user = null;
         },
         async login(user: string, password: string) {
-            this.logout();
+            await this.logout();
             const loginResponse = await http.post('/login', {
                 user,
                 password
             });
             if (loginResponse.status === 200)
                 await this.fetch();
+
+            return this.fetched;
         },
         async fetch() {
             const res = await handleResponse(http.get('/user'));
-            if (res.success)
+            if (res.code === 200)
                 this.user = res.data;
             this.fetched = true;
         },
         async register(email: string, username: string, password: string) {
-            this.logout();
-            try {
-                const response = await http.post('/register', {
-                    email,
-                    username,
-                    password
-                });
-                return response.status === 200;
-            } catch (e) {
-                console.log(e);
-                return false;
-            }
-        },
-        handleResponse(response: AxiosResponse) {
-            const data = response.data;
-            if(response.statusText !== "OK") {
-                if (response.status === 401) {
-                    this.logout();
-                    location.reload();
-                }
-                const error = (data && data.error) || response.statusText;
-                return Promise.reject(error);
-            }
-            return data.data;
+            await this.logout();
+            const response = await http.post('/register', {
+                email,
+                username,
+                password
+            });
+            return response.status === 200;
         }
     }
 });

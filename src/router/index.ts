@@ -9,8 +9,9 @@ import DefaultLayout from "../layouts/DefaultLayout.vue";
 import DashboardLayout from "../layouts/DashboardLayout.vue";
 import HomeLayout from "../layouts/HomeLayout.vue";
 
-import { useSecurityStore } from "../stores/security";
+import { SecurityState, useSecurityStore } from "../stores/security";
 import { nextTick } from "vue";
+import { Store } from "pinia";
 
 const routes: RouteRecordRaw[] = [
     {
@@ -63,7 +64,7 @@ router.beforeEach(async (to, from, next) => {
     nextTick().then(() => document.title = (to.meta.title as string || DEFAULT_TITLE).replace("%p", to.name as string));
     if (!securityStore.fetched)
         await securityStore.fetch();
-    console.log(securityStore.isLoggedIn);
+    await handleLogout(to.path, securityStore.logout, securityStore.isLoggedIn, next);
     handleRedirect(to.path, securityStore.isLoggedIn, to.meta.secure as boolean, next);
 });
 
@@ -76,5 +77,12 @@ const handleRedirect = (path: string, loggedIn: boolean, secure: boolean, next: 
         return next('/login');
     else return next();
 }
+
+const handleLogout = async (path: string, logout: () => Promise<void>, loggedIn: boolean, next: NavigationGuardNext) => {
+    if (path === '/logout') {
+        await logout();
+        return next('/');
+    }
+};
 
 export default router;

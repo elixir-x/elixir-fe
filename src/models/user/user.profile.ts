@@ -3,7 +3,7 @@ export interface UserProfile {
     email: string,
     username: string,
     password: string,
-    profile_url?: string,
+    profileUrl?: string,
     lastLogin: Date,
     createdOn: Date,
 }

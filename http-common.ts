@@ -1,8 +1,13 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 
-export const handleResponse = async (res: Promise<AxiosResponse>): Promise<{ res: AxiosResponse, data: any, code: number, success: boolean, message: string }> => {
-    const response = await res;
-    return { res: response, data: response.data.data, code: response.status, success: response.data.success, message: response.data.message }
+export const handleResponse = async (res: Promise<AxiosResponse>): Promise<{ res: AxiosResponse | undefined, data: any, code: number, error: any }> => {
+    try {
+        const response = await res;
+        return { res: response, data: response.data.data, code: response.status, error: response.data.error }
+    } catch (e) {
+        const { response, message } = e as AxiosError;
+        return { res: response, data: null, code: 0, error: message }
+    }
 };
 
 export default axios.create({

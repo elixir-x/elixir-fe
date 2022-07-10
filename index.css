@@ -5,8 +5,8 @@
 
 @layer base {
     html, body {
-        font-family: Inter, sans-serif;
-        @apply w-full h-full bg-neutral-900 text-white;
+        font-family: 'Inter', sans-serif;
+        @apply w-full h-full bg-neutral-900 text-neutral-300;
     }
     #app {
         @apply w-full h-full;

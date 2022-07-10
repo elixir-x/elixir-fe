@@ -3,8 +3,7 @@ import { RouterLink } from "vue-router";
 import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import { string } from "zod";
-import http from "../../../http-common";
-
+import http, { handleResponse } from "../../../http-common";
 const { value: email, errorMessage: emailError } = useField("email",
     toFieldValidator(
         string({ required_error: "You must specify an email.", invalid_type_error: "You must specify an email." })
@@ -40,8 +39,8 @@ const onKeyUp = () => {
     // delay between checking the api for an available username
     clearTimeout(timer);
     timer = setTimeout(async () => {
-        const response = await http.get(`/check-username?username=${username.value}`);
-        if (response.status !== 200)
+        const response = await handleResponse(http.get(`/check-username?username=${username.value}`));
+        if (response.code !== 200)
             setUsernameErrors('This username has been taken.');
         else setUsernameErrors('This username is available.');
     }, 1000);
