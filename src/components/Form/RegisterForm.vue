@@ -34,7 +34,7 @@ let timer: NodeJS.Timeout;
 
 const onKeyUp = () => {
     // check if there is already an error being displayed
-    if (usernameError.value !== undefined) return;
+    if (usernameError.value !== undefined || username.value === undefined) return;
 
     // delay between checking the api for an available username
     clearTimeout(timer);

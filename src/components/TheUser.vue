@@ -32,13 +32,13 @@ const { user } = storeToRefs(useSecurityStore());
                         <img :src="user?.profileUrl" class="rounded-full w-12 h-12 mb-2"/>
                         <div class="flex flex-col">
                             <span class="font-medium text-lg leading-4">{{ user?.username }}</span>
-                            <span class="text-xs font-semibold text-violet-500">{{ user?.email }}</span>
+                            <span class="text-xs text-violet-500">{{ user?.email }}</span>
                         </div>
                     </div>
                 </MenuItem>
                 <MenuItem v-slot="{ active }" class="">
-                    <RouterLink to="/settings/profile" :class="[
-                        active ? 'bg-violet-600 border-violet-300' : 'bg-neutral-800 border-neutral-600',
+                    <RouterLink to="/settings" :class="[
+                        active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
                         <CogIcon class="w-4 h-4" />
@@ -47,7 +47,7 @@ const { user } = storeToRefs(useSecurityStore());
                 </MenuItem>
                 <MenuItem v-slot="{ active }" class="">
                     <RouterLink to="/help" :class="[
-                        active ? 'bg-violet-600 border-violet-300' : 'bg-neutral-800 border-neutral-600',
+                        active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
                         <QuestionMarkCircleIcon class="w-4 h-4" />
@@ -56,7 +56,7 @@ const { user } = storeToRefs(useSecurityStore());
                 </MenuItem>
                 <MenuItem v-slot="{ active }" class="">
                     <RouterLink to="/logout" :class="[
-                        active ? 'bg-violet-600 border-violet-300' : 'bg-neutral-800 border-neutral-600',
+                        active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'bottom-item'
                     ]">
                         <ExternalLinkIcon class="w-4 h-4" />

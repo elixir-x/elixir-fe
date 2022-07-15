@@ -4,8 +4,11 @@
 @tailwind utilities;
 
 @layer base {
+    * {
+        /*@apply focus:rounded-md focus:outline-none focus:ring focus:ring-offset-2*/
+    }
     html, body {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Inter var', sans-serif;
         @apply w-full h-full bg-neutral-900 text-neutral-300;
     }
     #app {

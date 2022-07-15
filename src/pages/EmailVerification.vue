@@ -57,9 +57,9 @@ const codeValidator = toFieldValidator(
             <button class="btn-primary h-10">Verify Now</button>
         </div>
     </Form>
-    <div v-else="!exists" class="flex items-center justify-center w-full h-full">
+    <div v-else class="flex items-center justify-center w-full h-full">
         <div class="flex space-y-2 flex-col p-6 rounded-md border border-neutral-700 text-center">
-            <span>No email verification code was specified.</span>
+            <span>No email verification code was specified or valid.</span>
             <span>Sorry mate, go somewhere else.</span>
         </div>
     </div>
