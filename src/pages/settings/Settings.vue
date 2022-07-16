@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { RouterView, useRouter } from "vue-router";
-import { Tab, TabGroup, TabList  } from "@headlessui/vue";
+import { Tab, TabGroup, TabList } from "@headlessui/vue";
 
 const router = useRouter();
 
@@ -30,12 +30,17 @@ const getRouterIndex = () => tabs.value.findIndex(route => route.path === router
             <TabGroup @change="onChangeTab" class="space-x-2" :default-index="getRouterIndex()">
                 <TabList>
                     <Tab v-for="(tab, index) in tabs" :index="index" v-slot="{ selected }">
-                        <div class="tab" :class="selected ? 'underline underline-offset-2 text-violet-500' : 'text-neutral-300'">{{ tab.name }}</div>
+                        <div class="tab"
+                             :class="selected ? 'underline underline-offset-2 text-violet-500' : 'text-neutral-300'">
+                            {{ tab.name }}
+                        </div>
                     </Tab>
                 </TabList>
             </TabGroup>
         </div>
-        <div><RouterView /></div>
+        <div>
+            <RouterView/>
+        </div>
     </div>
 </template>
 

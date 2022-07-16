@@ -18,7 +18,7 @@ const securityStore = useSecurityStore();
 
 const currentLayout = computed(() => {
   return (route.meta.layout || DefaultLayout);
-})
+});
 
 onMounted(async () => {
     if (route.meta.secure) {

@@ -57,7 +57,7 @@ const { user } = storeToRefs(useSecurityStore());
                 <MenuItem v-slot="{ active }" class="">
                     <RouterLink to="/logout" :class="[
                         active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
-                        'bottom-item'
+                        'border-item'
                     ]">
                         <ExternalLinkIcon class="w-4 h-4" />
                         <div>Logout</div>
@@ -70,13 +70,7 @@ const { user } = storeToRefs(useSecurityStore());
 
 <style scoped>
     .border-item {
-        @apply item border-x-2;
-    }
-    .top-item {
-        @apply border-item border-t-2 rounded-t-md
-    }
-    .bottom-item {
-        @apply border-item border-b-2 rounded-b-md
+        @apply item border-x-2 first:border-t-2 last:border-b-2 first:rounded-t-md last:rounded-b-md;
     }
     .item {
         @apply flex w-full font-medium items-center text-sm pl-4 py-2 space-x-1 transition-none no-underline;
