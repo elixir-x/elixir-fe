@@ -10,9 +10,9 @@ const { user } = storeToRefs(useSecurityStore());
 </script>
 
 <template>
-    <Menu as="div" class="relative inline-block" v-slot="{ open }">
+    <Menu as="div" class="relative block" v-slot="{ open }">
         <MenuButton>
-            <div class="flex items-center">
+            <div class="flex items-center space-x-1.5">
                 <span class="font-medium pr-1 md:visible invisible">{{ user?.username }}</span>
                 <img :src="user?.profileUrl" class="rounded-full w-7 h-7"/>
                 <ChevronDownIcon class="w-5 h-5 transition-transform" :class="{ 'rotate-180': open }"/>

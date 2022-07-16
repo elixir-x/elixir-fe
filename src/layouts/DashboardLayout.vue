@@ -11,6 +11,11 @@ import TheSidebar from "../components/Layout/TheSidebar.vue";
 <!--        <slot class="flex-1" />-->
 <!--    </div>-->
 <!--  </div>-->
-    <TheNavbar />
-    <slot />
+    <div class="grid w-full h-full grid-cols-[min-content_auto]">
+        <TheSidebar />
+        <div class="">
+            <TheNavbar />
+            <slot />
+        </div>
+    </div>
 </template>

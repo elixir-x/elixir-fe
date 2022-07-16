@@ -59,6 +59,10 @@ const routes: RouteRecordRaw[] = [
         path: '/settings',
         name: 'Settings',
         component: Settings,
+        meta: {
+            secure: true,
+            layout: DashboardLayout
+        },
         children: [
             {
                 path: '',
