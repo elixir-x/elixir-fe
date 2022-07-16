@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-12 mx-16 p-16 space-y-4">
+    <div class="mt-6 mx-8 p-16 space-y-4">
         <div class="title font-semibold text-4xl mb-1 tracking-tighter">Dashboard</div>
     </div>
 </template>

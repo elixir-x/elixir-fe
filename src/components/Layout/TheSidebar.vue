@@ -12,7 +12,7 @@ const expanded = ref(true);
 
 <template>
     <div :class="[expanded ? ' w-64' : ' w-16', 'bg-neutral-800/50 h-full transition-all duration-275']">
-        <div :class="[expanded ? 'group ml-8 space-x-3 mb-8' : 'flex-col space-y-2 mb-4', 'flex items-center mt-20']">
+        <div :class="[expanded ? 'group ml-8 space-x-3 mb-8' : 'flex-col space-y-2 mb-4', 'flex items-center mt-10']">
             <Logo class="w-10 h-10 fill-violet-600" />
             <span :class="['visible font-semibold tracking-tight text-2xl', expanded ? 'visible' : 'hidden']">elixir</span>
             <ChevronLeftIcon :class="[expanded ? ' rotate-180 justify-end' : 'items-center', 'w-4 h-4 flex flex-1 cursor-pointer transition-transform']" @click="expanded = !expanded" />

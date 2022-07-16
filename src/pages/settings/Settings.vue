@@ -24,7 +24,7 @@ const getRouterIndex = () => tabs.value.findIndex(route => route.path === router
 </script>
 
 <template>
-    <div class="mt-12 mx-16 p-16 space-y-4">
+    <div class="mt-6 mx-8 p-16 space-y-4">
         <div>
             <div class="title font-semibold text-4xl mb-1 tracking-tighter">Settings</div>
             <TabGroup @change="onChangeTab" class="space-x-2" :default-index="getRouterIndex()">

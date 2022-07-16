@@ -55,13 +55,13 @@ const { user } = storeToRefs(useSecurityStore());
                     </RouterLink>
                 </MenuItem>
                 <MenuItem v-slot="{ active }" class="">
-                    <RouterLink to="/logout" :class="[
+                    <a href="/logout" :class="[
                         active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
                         <ExternalLinkIcon class="w-4 h-4" />
                         <div>Logout</div>
-                    </RouterLink>
+                    </a>
                 </MenuItem>
             </MenuItems>
         </transition>

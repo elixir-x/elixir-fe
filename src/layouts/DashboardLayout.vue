@@ -4,11 +4,9 @@ import TheSidebar from "../components/Layout/TheSidebar.vue";
 </script>
 
 <template>
-    <div class="grid w-full h-full grid-cols-[min-content_auto]">
+    <div class="grid-wrap grid grid-cols-[min-content] grid-rows-[min-content_auto] w-full h-full">
+        <TheNavbar class="col-span-2" />
         <TheSidebar />
-        <div>
-            <TheNavbar />
-            <slot />
-        </div>
+        <slot />
     </div>
 </template>
