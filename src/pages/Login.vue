@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useSecurityStore } from "../stores/security";
 import { useRouter } from "vue-router";
-import LoginForm from '../components/Form/LoginForm.vue';
+import LoginForm from '../components/form/LoginForm.vue';
 import Logo from '../components/Logo.vue';
 import { useForm } from "vee-validate";
 

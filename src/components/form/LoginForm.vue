@@ -3,6 +3,8 @@ import { RouterLink } from "vue-router";
 import { string } from "zod";
 import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
+import Input from './Input.vue';
+
 
 const { value: username, errorMessage: usernameError } = useField("username",
     toFieldValidator(
@@ -16,21 +18,8 @@ const { value: password, errorMessage: passwordError } = useField("password", to
 
 <template>
     <form class="form">
-        <div class="fields field-wrapper">
-
-            <label for="username">Username</label>
-            <div class="field-wrapper">
-                <input type="text" v-model="username"/>
-                <span class="error">{{ usernameError }}</span>
-            </div>
-
-            <label for="password">Password</label>
-            <div class="field-wrapper">
-                <input type="password" v-model="password"/>
-                <span class="error">{{ passwordError }}</span>
-            </div>
-
-        </div>
+        <Input name="username" v-model="username" :error="usernameError" label="Username" class="space-y-2" />
+        <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" class="space-y-2" />
         <button class="btn-primary">Login</button>
         <span class="text-center mt-3 text-sm text-neutral-300">
       Not signed up?

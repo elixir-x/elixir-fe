@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useSecurityStore } from "../stores/security";
-import RegisterForm from '../components/Form/RegisterForm.vue';
+import RegisterForm from '../components/form/RegisterForm.vue';
 import Logo from '../components/Logo.vue';
 import { useRouter } from "vue-router";
 import { useForm } from "vee-validate";

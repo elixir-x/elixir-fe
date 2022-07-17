@@ -3,7 +3,9 @@ import { RouterLink } from "vue-router";
 import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import { string } from "zod";
-import http, { handleResponse } from "../../../http-common";
+import { checkUsername } from "../../utils/user-fetch";
+import Input from './Input.vue';
+
 const { value: email, errorMessage: emailError } = useField("email",
     toFieldValidator(
         string({ required_error: "You must specify an email.", invalid_type_error: "You must specify an email." })
@@ -39,8 +41,8 @@ const onKeyUp = () => {
     // delay between checking the api for an available username
     clearTimeout(timer);
     timer = setTimeout(async () => {
-        const response = await handleResponse(http.get(`/check-username?username=${username.value}`));
-        if (response.code !== 200)
+        const success = await checkUsername(username.value as string);
+        if (!success)
             setUsernameErrors('This username has been taken.');
         else setUsernameErrors('This username is available.');
     }, 1000);
@@ -52,29 +54,11 @@ const onKeyUp = () => {
     <form class="form">
         <div class="fields field-wrapper">
 
-            <label for="email">Email</label>
-            <div class="field-wrapper">
-                <input type="text" v-model="email"/>
-                <span class="error">{{ emailError }}</span>
-            </div>
-
-            <label for="username">Username</label>
-            <div class="field-wrapper">
-                <input type="text" name="username" @keyup="onKeyUp" v-model="username"/>
-                <span :class="usernameError?.includes('available') ? 'available' : 'error'">{{ usernameError }}</span>
-            </div>
-
-            <label for="password">Password</label>
-            <div class="field-wrapper">
-                <input type="password" name="password" v-model="password"/>
-                <span class="error">{{ passwordError }}</span>
-            </div>
-
-            <label for="confirm-password">Confirm Password</label>
-            <div class="field-wrapper">
-                <input type="password" name="confirm-password" v-model="confirmPassword"/>
-                <span class="error">{{ confirmPasswordError }}</span>
-            </div>
+            <Input name="email" v-model="email" :error="emailError" label="Email" class="space-y-2" />
+            <Input name="username" v-model="username" :error="usernameError" label="Username"
+                   :error-class="usernameError?.includes('available') ? 'success' : 'error'" class="space-y-2" />
+            <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" class="space-y-2" />
+            <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" class="space-y-2" />
 
             <div class="text-sm text-neutral-300">
                 <input type="checkbox" name="terms" class="check"/>
@@ -92,9 +76,6 @@ const onKeyUp = () => {
 </template>
 
 <style scoped>
-.error, .available {
-    @apply text-sm mt-1 text-red-500
-}
 
 .available {
     @apply text-green-500;
