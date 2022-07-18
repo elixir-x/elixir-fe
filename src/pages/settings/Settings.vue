@@ -26,7 +26,7 @@ const getRouterIndex = () => tabs.value.findIndex(route => route.path === router
 <template>
     <div class="mt-6 mx-8 p-16 space-y-4">
         <div>
-            <div class="title font-semibold text-4xl mb-1 tracking-tighter">Settings</div>
+            <h1 class="title font-semibold text-4xl mb-1 tracking-tighter">Settings</h1>
             <TabGroup @change="onChangeTab" class="space-x-2 mb-6" :default-index="getRouterIndex()">
                 <TabList>
                     <Tab v-for="(tab, index) in tabs" :index="index" v-slot="{ selected }">

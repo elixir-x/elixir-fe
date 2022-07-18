@@ -56,13 +56,16 @@
     .link-primary {
         @apply text-violet-500 hover:text-violet-400
     }
-    .error, .available {
-        @apply text-sm mt-1 text-red-500
+    .error, .success {
+        @apply text-sm mt-1 text-red-500;
+    }
+    .success {
+        @apply text-green-500
     }
 }
 
 @layer utilities {
     .field-wrapper {
-        @apply flex flex-col
+        @apply flex flex-col;
     }
 }

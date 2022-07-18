@@ -54,11 +54,11 @@ const onKeyUp = () => {
     <form class="form">
         <div class="fields field-wrapper">
 
-            <Input name="email" v-model="email" :error="emailError" label="Email" class="space-y-2" />
+            <Input name="email" v-model="email" :error="emailError" label="Email" />
             <Input name="username" v-model="username" :error="usernameError" label="Username"
-                   :error-class="usernameError?.includes('available') ? 'success' : 'error'" class="space-y-2" />
-            <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" class="space-y-2" />
-            <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" class="space-y-2" />
+                   :error-class="usernameError?.includes('available') ? 'success' : 'error'" @keyup="onKeyUp" />
+            <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" />
+            <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" />
 
             <div class="text-sm text-neutral-300">
                 <input type="checkbox" name="terms" class="check"/>
@@ -76,11 +76,6 @@ const onKeyUp = () => {
 </template>
 
 <style scoped>
-
-.available {
-    @apply text-green-500;
-}
-
 form {
     @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6
     shadow-xl;

@@ -9,6 +9,9 @@ import { string } from "zod";
 import LimitedTextArea from "../../components/form/LimitedTextArea.vue";
 import Input from '../../components/form/Input.vue';
 import { ref } from "vue";
+import { checkUsername } from "../../utils/user-fetch";
+import InputWrapper from "../../components/form/InputWrapper.vue";
+
 const { handleSubmit } = useForm();
 
 const { user } = storeToRefs(useSecurityStore());
@@ -28,7 +31,7 @@ const { value: username, errorMessage: usernameError, setErrors: setUsernameErro
             .optional()
     ), { validateOnValueUpdate: true, initialValue: user.value?.username });
 
-const { value: password, errorMessage: passwordError } = useField("password", toFieldValidator(
+const { value: password, errorMessage: passwordError, setErrors: setPasswordErrors } = useField("password", toFieldValidator(
     string({ invalid_type_error: "You must enter a password." })
         .min(8, "Your password must be at least 8 characters.")
         .max(128, "Your password cannot be longer than 128 characters.")
@@ -46,61 +49,86 @@ const { value: bio, errorMessage: bioError } = useField("bio", toFieldValidator(
         .optional()
 ), { validateOnValueUpdate: true, initialValue: user.value?.bio });
 
-const onSubmit = handleSubmit(async ({ email, username, bio }: any) => {
+const successProfileModal = ref(false);
+const successAccountModal = ref(false);
 
-    const response = await handleResponse(http.patch('/user', {
-        email,
-        username,
-        bio
-    }));
-    console.log(bio);
+let timer: NodeJS.Timeout;
+
+const onKeyUp = () => {
+    // check if the user typed the same username and remove the error
+    if (username.value === user.value?.username) {
+        setUsernameErrors('');
+        return;
+    }
+    // check if there is already an error being displayed
+    if (usernameError.value !== undefined) return;
+
+    // delay between checking the api for an available username
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+        const success = await checkUsername(username.value as string);
+        if (!success)
+            setUsernameErrors('This username has been taken.');
+        else setUsernameErrors('This username is available.');
+    }, 1000);
+};
+
+const updateProfile = handleSubmit(async ({ bio }: any) => {
+    const response = await handleResponse(http.patch('/user', { bio }));
     if (response.code === 200)
-        successModal.value = true;
+        successProfileModal.value = true;
 });
 
-const successModal = ref(false);
+const updateAccount = handleSubmit(async ({ username, email, password, confirmPassword }: any) => {
+    if (!password && (username !== user.value?.username || email !== user.value?.email)) {
+        setPasswordErrors('You must enter a password to change important user details.');
+        return;
+    }
+    const response = await handleResponse(http.patch('/user', { email, username, password, confirmPassword }));
+    if (response.code === 200)
+        successAccountModal.value = true;
+});
 
 </script>
 
 <template>
     <div class="space-y-8">
-        <div class="tracking-tight font-semibold text-2xl mb-1">Account</div>
-        <div class="flex md:flex-row flex-col md:space-x-8">
-            <form @submit.prevent="onSubmit" class="block space-y-4">
-                <ProfilePicturePreview :profile-url="user?.profileUrl" :change="true"/>
-                <div class="grid grid-cols-2">
-                    <!--Form-->
-                    <div class="w-96">
-                        <Input name="username" v-model="username" :error="usernameError" label="Username" class="space-y-2" />
-                        <Input name="email" v-model="email" :error="emailError" label="Email" class="space-y-2" />
-                        <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" class="space-y-2" />
-                        <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" class="space-y-2" />
-                        <div class="field-wrapper">
-                            <label class="block" for="bio">Bio</label>
-                            <LimitedTextArea class="w-full h-full" :max-length="300" v-model="bio" />
-                            <span class="error">{{ bioError }}</span>
-                        </div>
-                        <button class="btn-primary w-full">Update Profile</button>
-                    </div>
-                    <!--Preview-->
-                    <div class="py-2 rounded-md">
-                        <label class="block">Preview</label>
-                        <div class="flex items-center space-x-2">
-                            <ProfilePicturePreview :profile-url="user?.profileUrl" />
-                            <div>
-                                <div class="text-xl text-white font-semibold">{{ username }}</div>
-                                <div class="max-w-md text-sm">{{ bio }}</div>
-                            </div>
+        <div class="grid grid-flow-col grid-cols-[min-content_auto] gap-16">
+            <div class="w-[28rem]">
+                <!--Profile-->
+                <h2 class="tracking-tight font-semibold text-2xl mb-4">Profile</h2>
+                <form @submit.prevent="updateProfile" class="block space-y-2">
+                    <div class="flex items-center space-x-4">
+                        <ProfilePicturePreview :profile-url="user?.profileUrl" :change="true" class="w-[7.125rem] min-w-[7.125rem]"/>
+                        <div>
+                            <div class="text-xl text-white font-semibold">{{ username }}</div>
+                            <p class="text-sm break-all">{{ bio }}</p>
                         </div>
                     </div>
-                </div>
-            </form>
+                    <InputWrapper name="bio" label="Bio" :error="bioError">
+                        <LimitedTextArea :max-length="300" height-class="h-[124px]" v-model="bio"/>
+                    </InputWrapper>
+                    <button class="btn-primary w-full">Update Profile</button>
+                </form>
+            </div>
+            <!--Account-->
+            <div class="w-96">
+                <h2 class="tracking-tight font-semibold text-2xl mb-4">Account</h2>
+                <form @submit.prevent="updateAccount" class="block space-y-2">
+                    <Input name="username" v-model="username" :error="usernameError" label="Username"
+                           :error-class="usernameError?.includes('available') ? 'success' : 'error'" @keyup="onKeyUp"/>
+                    <Input name="email" v-model="email" :error="emailError" label="Email"/>
+                    <Input name="password" v-model="password" :error="passwordError" type="password" label="Password" />
+                    <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" />
+                    <button class="btn-primary w-full">Update Account</button>
+                </form>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
-label {
-    @apply mb-2;
+.field-wrapper {
+    @apply space-y-2;
 }
 </style>

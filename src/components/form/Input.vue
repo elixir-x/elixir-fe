@@ -1,12 +1,13 @@
 <script lang="ts" setup>
+import InputWrapper from "./InputWrapper.vue";
 import { ref } from "vue";
 
 defineProps<{
     name: string,
+    wrapperClass?: string,
     modelValue?: any
-    type?: string,
-    placeholder?: string,
     label?: string,
+    labelClass?: string,
     error?: string
     errorClass?: string
 }>();
@@ -15,12 +16,16 @@ const emit = defineEmits(['update:modelValue']);
 const updateValue = (e: Event) => emit('update:modelValue', (e.target as HTMLInputElement).value);
 </script>
 
+<script lang="ts">
+export default {
+    inheritAttrs: false
+}
+</script>
+
 <template>
-    <div class="field-wrapper">
-        <label class="block" :for="name">{{ label }}</label>
-        <input class="w-full" :type="type" :name="name" :placeholder="placeholder" :value="modelValue" @input="updateValue">
-        <span class="error">{{ error }}</span>
-    </div>
+    <InputWrapper :name="name" :class="wrapperClass" :label="label" :label-class="labelClass" :error="error" :error-class="errorClass">
+        <input class="w-full" :name="name" v-bind="$attrs" :value="modelValue" @input="updateValue">
+    </InputWrapper>
 </template>
 
 <style scoped>

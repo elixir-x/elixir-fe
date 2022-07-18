@@ -3,6 +3,7 @@ import { ref } from "vue";
 
 const props = defineProps<{
     modelValue: any
+    heightClass?: string,
     minLength?: number
     maxLength?: number
 }>();
@@ -19,7 +20,7 @@ const updateValue = (e: Event) => {
 
 <template>
     <div class="relative">
-            <textarea class="p-2 w-full h-full" :minlength="minLength" :maxlength="maxLength"
+            <textarea :class="['p-2 w-full', heightClass ? heightClass : 'h-full']" :minlength="minLength" :maxlength="maxLength"
                       :value="modelValue"
                       @input="updateValue" />
         <span v-if="maxLength"
