@@ -5,6 +5,7 @@ export interface UserProfile {
     password: string,
     bio?: string,
     profileUrl?: string,
+    profileBlob?: Blob
     lastLogin: Date,
     createdOn: Date,
 }

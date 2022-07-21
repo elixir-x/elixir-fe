@@ -1,16 +1,16 @@
 <script lang="ts" setup>
-import { useSecurityStore } from "../stores/security";
+import { useSessionStore } from "../stores/session";
 import { useRouter } from "vue-router";
 import LoginForm from '../components/form/LoginForm.vue';
 import Logo from '../components/Logo.vue';
 import { useForm } from "vee-validate";
 
 const router = useRouter();
-const securityStore = useSecurityStore();
+const sessionStore = useSessionStore();
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit(async ({ username, password }: any) => {
-    const success = await securityStore.login(username, password);
+    const success = await sessionStore.login(username, password);
     if (success)
         await router.push({ path: '/dashboard', replace: true });
 });

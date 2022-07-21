@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-import { useSecurityStore } from "../stores/security";
+import { useSessionStore } from "../stores/session";
 import RegisterForm from '../components/form/RegisterForm.vue';
 import Logo from '../components/Logo.vue';
 import { useRouter } from "vue-router";
 import { useForm } from "vee-validate";
 
-const securityStore = useSecurityStore();
+const sessionStore = useSessionStore();
 const router = useRouter();
 
 const { handleSubmit } = useForm();
 
 const onSubmit = handleSubmit(async ({ email, username, password }: any) => {
-    console.log('submit');
-    await securityStore.register(email, username, password);
+    await sessionStore.register(email, username, password);
     await router.push({ path: `/email-verification` });
 });
 

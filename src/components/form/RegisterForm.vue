@@ -3,7 +3,7 @@ import { RouterLink } from "vue-router";
 import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import { string } from "zod";
-import { checkUsername } from "../../utils/user-fetch";
+import { checkUsername } from "../../utils/user-fetching";
 import Input from './Input.vue';
 
 const { value: email, errorMessage: emailError } = useField("email",
@@ -75,7 +75,12 @@ const onKeyUp = () => {
     </form>
 </template>
 
+
+
 <style scoped>
+.field-wrapper {
+    @apply space-y-2;
+}
 form {
     @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6
     shadow-xl;

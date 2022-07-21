@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import Logo from '../Logo.vue';
 import { CogIcon, ViewGridIcon } from "@heroicons/vue/outline";
-import { CogIcon as SolidCogIcon, ViewGridIcon as SolidViewGridIcon, ChevronLeftIcon } from "@heroicons/vue/solid";
+import { ChevronLeftIcon } from "@heroicons/vue/solid";
 import { useRoute } from "vue-router";
 import { ref } from "vue";
+
+// possibly if route is selected show a solid icon rather than an outline (a feature later down the line)
 
 const route = useRoute();
 
@@ -12,7 +14,7 @@ const expanded = ref(true);
 
 <template>
     <div :class="[expanded ? ' w-64' : ' w-16', 'bg-neutral-800/50 h-full transition-all duration-275']">
-        <div :class="[expanded ? 'group ml-8 space-x-3 mb-8' : 'flex-col space-y-2 mb-4', 'flex items-center mt-10']">
+        <div :class="[expanded ? 'group ml-8 space-x-3 mb-8' : 'flex-col space-y-4 mb-4', 'flex items-center mt-10']">
             <Logo class="w-10 h-10 fill-violet-600" />
             <span :class="['visible font-semibold tracking-tight text-2xl', expanded ? 'visible' : 'hidden']">elixir</span>
             <ChevronLeftIcon :class="[expanded ? ' rotate-180 justify-end' : 'items-center', 'w-4 h-4 flex flex-1 cursor-pointer transition-transform']" @click="expanded = !expanded" />

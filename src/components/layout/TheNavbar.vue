@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import TheUser from "../TheUser.vue";
-import Logo from "../Logo.vue";
+import TheUser from "../profile/TheUser.vue";
 </script>
 
 <template>

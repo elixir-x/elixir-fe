@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
-import { useSecurityStore } from "../stores/security";
+import { useSessionStore } from "../../stores/session";
 import { storeToRefs } from "pinia";
 import { ChevronDownIcon, ExternalLinkIcon, QuestionMarkCircleIcon, CogIcon } from "@heroicons/vue/solid";
 import { RouterLink } from "vue-router";
 
-const { user } = storeToRefs(useSecurityStore());
+const { user } = storeToRefs(useSessionStore());
 
 </script>
 
@@ -28,7 +28,8 @@ const { user } = storeToRefs(useSecurityStore());
         >
             <MenuItems class="absolute right-0 origin-top-right mt-2 w-64 shadow-lg">
                 <MenuItem disabled>
-                    <div class="flex items-center justify-center bg-neutral-800 rounded-t-md border-neutral-600 border-x-2 border-t-2 py-3 space-x-2">
+                    <div
+                        class="flex items-center justify-center bg-neutral-800 rounded-t-md border-neutral-600 border-x-2 border-t-2 py-3 space-x-2">
                         <img :src="user?.profileUrl" class="rounded-full w-12 h-12 mb-2"/>
                         <div class="flex flex-col">
                             <span class="font-medium text-lg leading-4">{{ user?.username }}</span>
@@ -41,7 +42,7 @@ const { user } = storeToRefs(useSecurityStore());
                         active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
-                        <CogIcon class="w-4 h-4" />
+                        <CogIcon class="w-4 h-4"/>
                         <div>Settings</div>
                     </RouterLink>
                 </MenuItem>
@@ -50,7 +51,7 @@ const { user } = storeToRefs(useSecurityStore());
                         active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
-                        <QuestionMarkCircleIcon class="w-4 h-4" />
+                        <QuestionMarkCircleIcon class="w-4 h-4"/>
                         <div>Help</div>
                     </RouterLink>
                 </MenuItem>
@@ -59,7 +60,7 @@ const { user } = storeToRefs(useSecurityStore());
                         active ? 'bg-violet-600 border-violet-300 text-white' : 'bg-neutral-800 border-neutral-600 text-neutral-400',
                         'border-item'
                     ]">
-                        <ExternalLinkIcon class="w-4 h-4" />
+                        <ExternalLinkIcon class="w-4 h-4"/>
                         <div>Logout</div>
                     </a>
                 </MenuItem>
@@ -69,10 +70,11 @@ const { user } = storeToRefs(useSecurityStore());
 </template>
 
 <style scoped>
-    .border-item {
-        @apply item border-x-2 first:border-t-2 last:border-b-2 first:rounded-t-md last:rounded-b-md;
-    }
-    .item {
-        @apply flex w-full font-medium items-center text-sm pl-4 py-2 space-x-1 transition-none no-underline;
-    }
+.border-item {
+    @apply item border-x-2 first:border-t-2 last:border-b-2 first:rounded-t-md last:rounded-b-md;
+}
+
+.item {
+    @apply flex w-full font-medium items-center text-sm pl-4 py-2 space-x-1 transition-none no-underline;
+}
 </style>

@@ -1,20 +1,45 @@
 <script lang="ts" setup>
-import { useSecurityStore } from "../../stores/security";
+import { useSessionStore } from "../../stores/session";
 import { storeToRefs } from "pinia";
-import ProfilePicturePreview from "../../components/ProfilePicturePreview.vue";
-import http, { handleResponse } from "../../../http-common";
+import ProfilePicturePreview from "../../components/image/ProfilePicturePreview.vue";
 import { useField, useForm } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import { string } from "zod";
 import LimitedTextArea from "../../components/form/LimitedTextArea.vue";
 import Input from '../../components/form/Input.vue';
 import { ref } from "vue";
-import { checkUsername } from "../../utils/user-fetch";
+import { checkUsername, updateUserInfo } from "../../utils/user-fetching";
 import InputWrapper from "../../components/form/InputWrapper.vue";
 
 const { handleSubmit } = useForm();
 
-const { user } = storeToRefs(useSecurityStore());
+const sessionStore = useSessionStore();
+const { user } = storeToRefs(sessionStore);
+
+
+const successProfileModal = ref(false);
+const successAccountModal = ref(false);
+
+let timer: NodeJS.Timeout;
+
+const onKeyUp = () => {
+    // check if the user typed the same username and remove the error
+    if (username.value === user.value?.username) {
+        setUsernameErrors('');
+        return;
+    }
+    // check if there is already an error being displayed
+    if (usernameError.value !== undefined) return;
+
+    // delay between checking the api for an available username
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+        const success = await checkUsername(username.value as string);
+        if (!success)
+            setUsernameErrors('This username has been taken.');
+        else setUsernameErrors('This username is available.');
+    }, 1000);
+};
 
 const { value: email, errorMessage: emailError } = useField("email",
     toFieldValidator(
@@ -49,44 +74,21 @@ const { value: bio, errorMessage: bioError } = useField("bio", toFieldValidator(
         .optional()
 ), { validateOnValueUpdate: true, initialValue: user.value?.bio });
 
-const successProfileModal = ref(false);
-const successAccountModal = ref(false);
-
-let timer: NodeJS.Timeout;
-
-const onKeyUp = () => {
-    // check if the user typed the same username and remove the error
-    if (username.value === user.value?.username) {
-        setUsernameErrors('');
-        return;
-    }
-    // check if there is already an error being displayed
-    if (usernameError.value !== undefined) return;
-
-    // delay between checking the api for an available username
-    clearTimeout(timer);
-    timer = setTimeout(async () => {
-        const success = await checkUsername(username.value as string);
-        if (!success)
-            setUsernameErrors('This username has been taken.');
-        else setUsernameErrors('This username is available.');
-    }, 1000);
-};
-
-const updateProfile = handleSubmit(async ({ bio }: any) => {
-    const response = await handleResponse(http.patch('/user', { bio }));
-    if (response.code === 200)
-        successProfileModal.value = true;
+const updateProfile = handleSubmit(async ({ bio }: Record<string, any>) => {
+    successProfileModal.value = await updateUserInfo({ bio, profileBlob: user.value?.profileBlob });
 });
 
-const updateAccount = handleSubmit(async ({ username, email, password, confirmPassword }: any) => {
+const updateAccount = handleSubmit(async ({ username, email, password, confirmPassword }: Record<string, any>) => {
     if (!password && (username !== user.value?.username || email !== user.value?.email)) {
         setPasswordErrors('You must enter a password to change important user details.');
         return;
     }
-    const response = await handleResponse(http.patch('/user', { email, username, password, confirmPassword }));
-    if (response.code === 200)
-        successAccountModal.value = true;
+    successAccountModal.value = await updateUserInfo({
+        username,
+        email,
+        password,
+        confirmPassword
+    });
 });
 
 </script>
@@ -98,7 +100,7 @@ const updateAccount = handleSubmit(async ({ username, email, password, confirmPa
                 <!--Profile-->
                 <h2 class="tracking-tight font-semibold text-2xl mb-4">Profile</h2>
                 <form @submit.prevent="updateProfile" class="block space-y-2">
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-8">
                         <ProfilePicturePreview :profile-url="user?.profileUrl" :change="true" class="w-[7.125rem] min-w-[7.125rem]"/>
                         <div>
                             <div class="text-xl text-white font-semibold">{{ username }}</div>
@@ -106,7 +108,7 @@ const updateAccount = handleSubmit(async ({ username, email, password, confirmPa
                         </div>
                     </div>
                     <InputWrapper name="bio" label="Bio" :error="bioError">
-                        <LimitedTextArea :max-length="300" height-class="h-[124px]" v-model="bio"/>
+                        <LimitedTextArea :max-length="300" height-class="h-[152px]" v-model="bio"/>
                     </InputWrapper>
                     <button class="btn-primary w-full">Update Profile</button>
                 </form>
@@ -122,6 +124,10 @@ const updateAccount = handleSubmit(async ({ username, email, password, confirmPa
                     <Input name="confirm-password" v-model="confirmPassword" :error="confirmPasswordError" type="password" label="Confirm Password" />
                     <button class="btn-primary w-full">Update Account</button>
                 </form>
+            </div>
+            <div class="w-96">
+                <h2 class="tracking-tight font-semibold text-2xl mb-4">Branding</h2>
+
             </div>
         </div>
     </div>

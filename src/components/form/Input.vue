@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import InputWrapper from "./InputWrapper.vue";
-import { ref } from "vue";
 
 defineProps<{
     name: string,

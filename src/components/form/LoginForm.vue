@@ -5,7 +5,6 @@ import { useField } from "vee-validate";
 import { toFieldValidator } from "@vee-validate/zod";
 import Input from './Input.vue';
 
-
 const { value: username, errorMessage: usernameError } = useField("username",
     toFieldValidator(
         string({ required_error: "You must specify a username.", invalid_type_error: "You must specify a username." })
@@ -29,7 +28,9 @@ const { value: password, errorMessage: passwordError } = useField("password", to
 </template>
 
 <style scoped>
-
+.field-wrapper {
+    @apply space-y-2;
+}
 form {
     @apply flex flex-col w-96 max-w-7xl border-2 bg-neutral-900 border-neutral-800 rounded-xl p-6
     shadow-xl;

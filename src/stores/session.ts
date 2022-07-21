@@ -1,15 +1,24 @@
 import { defineStore } from 'pinia';
 import { UserProfile } from '../models/user/user.profile';
-import { AxiosResponse } from 'axios';
 import http, { handleResponse } from '../../http-common';
 
-export type SecurityState = {
+export type SessionState = {
     user: UserProfile | null,
     fetched: boolean,
 }
 
-export const useSecurityStore = defineStore('security', {
-    state: (): SecurityState => ({
+export type UserUpdateProps = {
+    email: string,
+    username: string,
+    password: string,
+    confirmPassword: string,
+    bio: string,
+    profileUrl: string,
+    profileBlob: Blob
+}
+
+export const useSessionStore = defineStore('session', {
+    state: (): SessionState => ({
         user: null,
         fetched: false
     }),
@@ -38,7 +47,7 @@ export const useSecurityStore = defineStore('security', {
         async fetch() {
             const res = await handleResponse(http.get('/user'));
             if (res.code === 200)
-                this.user = res.data;
+                this.user = { ...res.data, profileUrl: res.data.profileUrl ? `${import.meta.env.ELIXIR_STATIC_BASE_URL}/static/profiles/${res.data.profileUrl}` : undefined };
             this.fetched = true;
         },
         async register(email: string, username: string, password: string) {
@@ -49,6 +58,12 @@ export const useSecurityStore = defineStore('security', {
                 password
             });
             return response.status === 200;
+        },
+        update(updateProps: Partial<UserUpdateProps>) {
+            this.user = { ...this.user, ...updateProps } as UserProfile;
+        },
+        clear() {
+            this.user = null;
         }
     }
 });

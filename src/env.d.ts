@@ -9,6 +9,7 @@ declare module '*.vue' {
 
 interface ImportMetaEnv {
     readonly ELIXIR_API_BASE_URL: string
+    readonly ELIXIR_STATIC_BASE_URL: string
     // more env variables...
 }
 

@@ -37,15 +37,18 @@
         @apply cursor-pointer rounded-lg shadow-md py-1 px-4 transition-all
         duration-100 text-white bg-neutral-600 border-neutral-500
         hover:border-neutral-400 border font-semibold text-sm focus:ring-1
-        ring-neutral-400
+        ring-neutral-400 disabled:cursor-not-allowed disabled:bg-neutral-700/20
+        disabled:border-neutral-400/20
     }
     .btn-primary {
         @apply btn bg-violet-600 ring-violet-500 border-violet-500 text-white
-        focus:ring-1 hover:border-violet-400
+        focus:ring-1 hover:border-violet-400 disabled:bg-violet-600/20
+        disabled:border-violet-500/20
     }
     .btn-confirm {
-        @apply btn bg-green-600 ring-green-500 border-green-500 text-white
-        focus:ring-1 hover:border-green-400
+        @apply btn bg-green-700 ring-green-600 border-green-600 text-white
+        focus:ring-1 hover:border-green-400 disabled:bg-green-600/20
+        disabled:border-green-500/20
     }
     .check {
         @apply appearance-none bg-neutral-800 checked:bg-neutral-400 rounded-sm p-1.5

@@ -17,6 +17,7 @@
     "pinia-plugin-persistedstate": "^1.6.1",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.25",
+    "vue-advanced-cropper": "^2.8.3",
     "vue-router": "^4.0.16",
     "zod": "^3.17.3"
   },

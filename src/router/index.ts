@@ -14,7 +14,7 @@ import Settings from '../pages/settings/Settings.vue';
 import General from '../pages/settings/General.vue';
 import Profile from '../pages/settings/Profile.vue';
 
-import { SecurityState, useSecurityStore } from "../stores/security";
+import { SessionState, useSessionStore } from "../stores/session";
 import { nextTick } from "vue";
 import { Store } from "pinia";
 
@@ -86,12 +86,12 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-    const securityStore = useSecurityStore();
+    const sessionStore = useSessionStore();
     nextTick().then(() => document.title = (to.meta.title as string || DEFAULT_TITLE).replace("%p", to.name as string));
-    if (!securityStore.fetched && to.meta.secure)
-        await securityStore.fetch();
-    await handleLogout(to.path, securityStore.logout, securityStore.isLoggedIn, next);
-    handleRedirect(to.path, securityStore.isLoggedIn, to.meta.secure as boolean, next);
+    if (!sessionStore.fetched && to.meta.secure)
+        await sessionStore.fetch();
+    await handleLogout(to.path, sessionStore.logout, sessionStore.isLoggedIn, next);
+    handleRedirect(to.path, sessionStore.isLoggedIn, to.meta.secure as boolean, next);
 });
 
 const handleRedirect = (path: string, loggedIn: boolean, secure: boolean, next: NavigationGuardNext) => {
