@@ -1,74 +1,81 @@
-@import url('https://rsms.me/inter/inter.css');
+@import url("https://rsms.me/inter/inter.css");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-    * {
-        /*@apply focus:rounded-md focus:outline-none focus:ring focus:ring-offset-2*/
-    }
-    html, body {
-        font-family: 'Inter var', sans-serif;
-        @apply w-full h-full bg-neutral-900 text-neutral-300;
-    }
-    #app {
-        @apply w-full h-full;
-    }
-    a {
-        @apply underline underline-offset-2 transition-all duration-100
-    }
-    input {
-        @apply pl-2 py-1 text-neutral-300 border rounded-md border-neutral-700
-        bg-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-500
-        caret-neutral-400 text-sm;
-    }
-    textarea {
-        @apply text-neutral-300 border rounded-md border-neutral-700 bg-neutral-800
-        focus:outline-none focus:ring-1 focus:ring-neutral-500
-        caret-neutral-400 text-sm;
-    }
-    label {
-        @apply text-white text-sm font-medium;
-    }
+	* {
+		/*@apply focus:rounded-md focus:outline-none focus:ring focus:ring-offset-2*/
+	}
+	html,
+	body {
+		font-family: "Inter var", sans-serif;
+		@apply h-full w-full bg-neutral-900 text-neutral-300;
+	}
+	#app {
+		@apply h-full w-full;
+	}
+	a {
+		@apply underline underline-offset-2 transition-all duration-100;
+	}
+	input {
+		@apply rounded-md border border-neutral-700 bg-neutral-800 py-1 pl-2
+        text-sm text-neutral-300 caret-neutral-400 focus:outline-none
+        focus:ring-1 focus:ring-neutral-500;
+	}
+	textarea {
+		@apply rounded-md border border-neutral-700 bg-neutral-800 text-sm
+        text-neutral-300 caret-neutral-400 focus:outline-none
+        focus:ring-1 focus:ring-neutral-500;
+	}
+	label {
+		@apply text-sm font-medium text-white;
+	}
 }
 
 @layer components {
-    .btn {
-        @apply cursor-pointer rounded-lg shadow-md py-1 px-4 transition-all
-        duration-100 text-white bg-neutral-600 border-neutral-500
-        hover:border-neutral-400 border font-semibold text-sm focus:ring-1
-        ring-neutral-400 disabled:cursor-not-allowed disabled:bg-neutral-700/20
-        disabled:border-neutral-400/20
-    }
-    .btn-primary {
-        @apply btn bg-violet-600 ring-violet-500 border-violet-500 text-white
-        focus:ring-1 hover:border-violet-400 disabled:bg-violet-600/20
-        disabled:border-violet-500/20
-    }
-    .btn-confirm {
-        @apply btn bg-green-700 ring-green-600 border-green-600 text-white
-        focus:ring-1 hover:border-green-400 disabled:bg-green-600/20
-        disabled:border-green-500/20
-    }
-    .check {
-        @apply appearance-none bg-neutral-800 checked:bg-neutral-400 rounded-sm p-1.5
-    }
-    .check-primary {
-        @apply check checked:bg-violet-600
-    }
-    .link-primary {
-        @apply text-violet-500 hover:text-violet-400
-    }
-    .error, .success {
-        @apply text-sm mt-1 text-red-500;
-    }
-    .success {
-        @apply text-green-500
-    }
+	.btn {
+		@apply cursor-pointer rounded-lg border border-neutral-500 bg-neutral-600 py-1
+        px-4 text-sm font-semibold text-white
+        shadow-md ring-neutral-400 transition-all duration-100 hover:border-neutral-400
+        focus:ring-1 disabled:cursor-not-allowed disabled:border-neutral-400/20
+        disabled:bg-neutral-700/20;
+	}
+	.btn-primary {
+		@apply btn border-violet-500 bg-violet-600 text-white ring-violet-500
+        hover:border-violet-400 focus:ring-1 disabled:border-violet-500/20
+        disabled:bg-violet-600/20;
+	}
+	.btn-confirm {
+		@apply btn border-green-600 bg-green-700 text-white ring-green-600
+        hover:border-green-400 focus:ring-1 disabled:border-green-500/20
+        disabled:bg-green-600/20;
+	}
+	.btn-deny {
+		@apply btn border-rose-600 bg-rose-700 text-white ring-rose-600
+		hover:border-rose-400 focus:ring-1 disabled:border-rose-500/20
+		disabled:bg-rose-600/20;
+	}
+	.check {
+		@apply appearance-none rounded-sm bg-neutral-800 p-1.5 checked:bg-neutral-400;
+	}
+	.check-primary {
+		@apply check checked:bg-violet-600;
+	}
+	.link-primary {
+		@apply text-violet-500 hover:text-violet-400;
+	}
+	.error,
+	.success {
+		@apply mt-1 text-sm text-red-500;
+	}
+	.success {
+		@apply text-green-500;
+	}
 }
 
 @layer utilities {
-    .field-wrapper {
-        @apply flex flex-col;
-    }
+	.field-wrapper {
+		@apply flex flex-col;
+	}
 }

@@ -4,9 +4,9 @@ import TheFooter from "../components/layout/TheFooter.vue";
 </script>
 
 <template>
-    <div>
-        <TheNavbar/>
-        <slot/>
-        <TheFooter/>
-    </div>
+	<div>
+		<TheNavbar />
+		<slot />
+		<TheFooter />
+	</div>
 </template>

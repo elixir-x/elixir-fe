@@ -4,45 +4,45 @@ name: Staging Deployment
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "staging" branch
-  push:
-    branches: [ "staging" ]
+    # Triggers the workflow on push or pull request events but only for the "staging" branch
+    push:
+        branches: ["staging"]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      ELIXIR_API_BASE_URL: 'https://elixir.rocks/api/v1'
+    build:
+        runs-on: ubuntu-latest
+        env:
+            ELIXIR_API_BASE_URL: "https://elixir.rocks/api/v1"
 
-    steps:
-      - name: Checkout Files
-        uses: actions/checkout@v3
+        steps:
+            - name: Checkout Files
+              uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.4.0'
+            - name: Setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18.4.0"
 
-      - name: Install Dependencies
-        run: yarn install
+            - name: Install Dependencies
+              run: yarn install
 
-      - name: Create dotenv
-        uses: iamsauravsharma/create-dotenv@v1.2.1
+            - name: Create dotenv
+              uses: iamsauravsharma/create-dotenv@v1.2.1
 
-      - name: Build Project
-        run: yarn build
+            - name: Build Project
+              run: yarn build
 
-      - name: Deploy with Rsync
-        uses: burnett01/rsync-deployments@5.2
-        with:
-          switches: -avzr --delete
-          path: dist/
-          remote_path: /var/lib/docker/volumes/nginx-data/_data
-          remote_host: ${{ secrets.SSH_HOST }}
-          remote_user: ${{ secrets.SSH_USER }}
-          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          remote_key_pass: ${{ secrets.SSH_PRIVATE_KEY_PASS }}
+            - name: Deploy with Rsync
+              uses: burnett01/rsync-deployments@5.2
+              with:
+                  switches: -avzr --delete
+                  path: dist/
+                  remote_path: /var/lib/docker/volumes/nginx-data/_data
+                  remote_host: ${{ secrets.SSH_HOST }}
+                  remote_user: ${{ secrets.SSH_USER }}
+                  remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+                  remote_key_pass: ${{ secrets.SSH_PRIVATE_KEY_PASS }}
