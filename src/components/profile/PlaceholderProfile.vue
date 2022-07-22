@@ -2,7 +2,7 @@
 import { UserCircleIcon } from "@heroicons/vue/outline";
 
 defineProps<{
-	logoClass: string;
+	logoClass?: string;
 }>();
 </script>
 

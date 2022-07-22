@@ -128,7 +128,8 @@ const updateAccount = handleSubmit(
 			username,
 			email,
 			password,
-			confirmPassword
+			confirmPassword,
+			profileBlob: user.value?.profileBlob
 		});
 	}
 );

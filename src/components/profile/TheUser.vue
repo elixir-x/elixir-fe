@@ -113,6 +113,6 @@ const { user } = storeToRefs(useSessionStore());
 }
 
 .item {
-	@apply flex w-full items-center space-x-1 py-2 pl-4 text-sm font-medium no-underline transition-none;
+	@apply flex w-full items-center space-x-2 py-2 pl-7 text-sm font-medium no-underline transition-none;
 }
 </style>
