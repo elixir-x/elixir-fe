@@ -63,7 +63,7 @@ const { user } = storeToRefs(useSessionStore());
 						</div>
 					</div>
 				</MenuItem>
-				<MenuItem v-slot="{ active }" class="">
+				<MenuItem v-slot="{ active }">
 					<RouterLink
 						to="/settings"
 						:class="[
@@ -76,7 +76,7 @@ const { user } = storeToRefs(useSessionStore());
 						<div>Settings</div>
 					</RouterLink>
 				</MenuItem>
-				<MenuItem v-slot="{ active }" class="">
+				<MenuItem v-slot="{ active }">
 					<RouterLink
 						to="/help"
 						:class="[
@@ -89,7 +89,7 @@ const { user } = storeToRefs(useSessionStore());
 						<div>Help</div>
 					</RouterLink>
 				</MenuItem>
-				<MenuItem v-slot="{ active }" class="">
+				<MenuItem v-slot="{ active }">
 					<a
 						href="/logout"
 						:class="[
