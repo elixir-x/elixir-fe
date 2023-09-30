@@ -3,6 +3,8 @@
 Archived due to time since last touched and having transitioned to a different web framework, namely React. I am still very satisfied with the hign quality work I produced during the lifetime
 of this project. Please feel free to look around.
 
+![Elixir Showcase Photo](https://github.com/elixir-x/elixir-fe/assets/38674879/e1f17e61-12f5-456b-ae56-831166b5ea6f)
+
 ## Installation (for local development)
 
 ### Certificates
